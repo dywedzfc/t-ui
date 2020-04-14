@@ -5,9 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --name index --dest lib packages/index.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name index --dest lib packages/index.js"
+    "lint": "vue-cli-service lint"
   },
   "main": "lib/index.umd.min.js",
   "files": [
@@ -16,6 +16,8 @@
   "dependencies": {
     "core-js": "^3.6.4",
     "element-ui": "^2.4.5",
+    "image-js": "^0.21.9",
+    "underscore": "^1.10.2",
     "vue": "^2.6.11"
   },
   "devDependencies": {

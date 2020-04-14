@@ -1,3 +1,9 @@
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 module.exports = {
   pages: {
     index: {
@@ -8,5 +14,15 @@ module.exports = {
   },
   devServer: {
     port: 4000
+  },
+  configureWebpack: {
+    resolve: {
+      extensions: ['.js', '.vue', '.json'],
+      alias: {
+        util: resolve('src/utils'),
+        mixins: resolve('src/mixins'),
+        't-ui': resolve('packages')
+      }
+    }
   }
 }
