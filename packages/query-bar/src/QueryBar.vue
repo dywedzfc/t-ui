@@ -7,19 +7,19 @@
 
 <script>
 export default {
-  name: "TQueryBar",
+  name: 'TQueryBar',
   props: {
     type: String,
     model: Object,
     size: {
       type: String,
-      default: "small"
+      default: 'small'
     }
   },
   computed: {
     hasInline() {
-      return this.type === "search" ? false : true;
+      return this.type === 'search' ? false : true
     }
   }
-};
+}
 </script>

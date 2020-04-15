@@ -21,10 +21,7 @@
 
 <script>
 export default {
-  name: "TQueryPanel",
-  data() {
-    return {};
-  },
+  name: 'TQueryPanel',
   props: {
     type: String,
     model: Object,
@@ -35,51 +32,54 @@ export default {
       type: [String, Number]
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.setQueryFooterHeight();
-      this.setQueryWapperMinHeight();
-      this.setQueryWapperHeight();
-      window.addEventListener("resize", () => this.setQueryWapperHeight());
-    });
+  data() {
+    return {}
   },
   computed: {
     hasMinHeight() {
-      return !!this.regStyleValue(this.minHeight);
+      return !!this.regStyleValue(this.minHeight)
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.setQueryFooterHeight()
+      this.setQueryWapperMinHeight()
+      this.setQueryWapperHeight()
+      window.addEventListener('resize', () => this.setQueryWapperHeight())
+    })
   },
   methods: {
     setQueryWapperHeight() {
-      const queryWrapper = this.$refs.wrapper;
+      const queryWrapper = this.$refs.wrapper
       if (this.$refs.querybar) {
-        const queryBarHeight = this.$refs.querybar.$el.offsetHeight;
+        const queryBarHeight = this.$refs.querybar.$el.offsetHeight
         if (this.$slots.footer) {
-          const queryFooterHeight = this.$refs.footer.offsetHeight;
-          const height = queryBarHeight + queryFooterHeight;
-          queryWrapper.style.height = `calc(100% - ${height}px)`;
-        } else queryWrapper.style.height = `calc(100% - ${queryBarHeight}px)`;
+          const queryFooterHeight = this.$refs.footer.offsetHeight
+          const height = queryBarHeight + queryFooterHeight
+          queryWrapper.style.height = `calc(100% - ${height}px)`
+        } else queryWrapper.style.height = `calc(100% - ${queryBarHeight}px)`
       } else {
-        queryWrapper.style.height = `100%`;
+        queryWrapper.style.height = `100%`
       }
     },
     setQueryWapperMinHeight() {
-      const queryWrapper = this.$refs.wrapper;
-      const minHeight = this.regStyleValue(this.minHeight);
-      if (minHeight) queryWrapper.style.minHeight = minHeight;
+      const queryWrapper = this.$refs.wrapper
+      const minHeight = this.regStyleValue(this.minHeight)
+      if (minHeight) queryWrapper.style.minHeight = minHeight
     },
     setQueryFooterHeight() {
-      if (!this.$slots.footer) return false;
-      const queryFooter = this.$refs.footer;
-      const height = this.regStyleValue(this.footer);
-      if (height) queryFooter.style.height = height;
+      if (!this.$slots.footer) return false
+      const queryFooter = this.$refs.footer
+      const height = this.regStyleValue(this.footer)
+      if (height) queryFooter.style.height = height
     },
     regStyleValue(value) {
-      const regString = /^[0-9]+px|em|rem|%$/;
-      const regNumber = /^[0-9]+$/;
-      if (regNumber.test(value)) return `${value}px`;
-      if (regString.test(value)) return value;
-      return "";
+      const regString = /^[0-9]+px|em|rem|%$/
+      const regNumber = /^[0-9]+$/
+      if (regNumber.test(value)) return `${value}px`
+      if (regString.test(value)) return value
+      return ''
     }
   }
-};
+}
 </script>
