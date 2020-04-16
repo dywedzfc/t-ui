@@ -1,0 +1,82 @@
+// 清除浮动
+@mixin clearfix {
+  zoom: 1;
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+  }
+}
+
+// 每项右间距
+@mixin row-spacing($value: 10) {
+  margin-bottom: $value;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// 每项右间距
+@mixin col-spacing($value: 10) {
+  margin-right: $value;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+@mixin border-shadow($radius: 5px, $color: #888888) {
+  border-radius: $radius;
+  box-shadow: 6px 6px 12px $color;
+}
+
+@mixin radius($type) {
+  @if $type == "top" {
+    @include radius-v;
+  } @else {
+    @if $type == "left" {
+      @include radius-h;
+    } @else {
+      @if $type == "right" {
+        @include radius-h(right);
+      } @else {
+        @if $type == "bottom" {
+          @include radius-v(bottom);
+        } @else {
+          @include radius__inherit;
+        }
+      }
+    }
+  }
+}
+
+@mixin list-radius($type: "") {
+  &:first-child {
+    @if ($type == "v") {
+      @include radius("top");
+    } @else {
+      @include radius("left");
+    }
+  }
+
+  &:last-child {
+    @if ($type == "v") {
+      @include radius("bottom");
+    } @else {
+      @include radius("right");
+    }
+  }
+}
+
+@mixin radius__inherit {
+  border-radius: inherit;
+}
+@mixin radius-v($type: top) {
+  border-#{$type}-left-radius: inherit;
+  border-#{$type}-right-radius: inherit;
+}
+@mixin radius-h($type: left) {
+  border-top-#{$type}-radius: inherit;
+  border-bottom-#{$type}-radius: inherit;
+}

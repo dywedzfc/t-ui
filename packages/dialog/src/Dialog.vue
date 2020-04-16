@@ -1,7 +1,7 @@
 <!-- 对话框 -->
 <template>
   <el-dialog
-    class="t-dialog"
+    class="t-dialog t-move"
     :visible.sync="display"
     :title="title"
     :width="width"
@@ -109,7 +109,8 @@ export default {
     },
     handleHeaderMousedown(e) {
       const { pageX, pageY } = e
-      const dialogTag = this.$refs['dialog'].$el.querySelector('.el-dialog')
+      const { dialog } = this.className
+      const dialogTag = this.$refs['dialog'].$el.querySelector(dialog)
       if (!dialogTag.style.position) dialogTag.style.position = 'relative'
       this.position.x = pageX
       this.position.y = pageY
@@ -123,6 +124,7 @@ export default {
       this.position.x = ''
       this.position.y = ''
       const dialogTag = this.$refs['dialog'].$el.querySelector(dialog)
+
       const { top, left } = dialogTag.style
       this.position.top = parseInt(top)
       this.position.left = parseInt(left)

@@ -1,0 +1,8 @@
+@import "./common/base.scss";
+@import "./mixins/base.scss";
+
+.t-page {
+  &-bar {
+    @include row-spacing($margin);
+  }
+}
