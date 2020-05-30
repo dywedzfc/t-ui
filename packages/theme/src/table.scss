@@ -1,6 +1,15 @@
 @import "./common/base.scss";
 @import "./mixins/base.scss";
 
+@mixin table-wrapper {
+  &-wrapper {
+    height: calc(100% - 48px);
+    .el-table__empty-block {
+      width: 100% !important;
+    }
+  }
+}
+
 .t-table {
   width: 100%;
   height: 100%;
@@ -75,14 +84,5 @@
   &-panel {
     height: 100%;
     box-sizing: border-box;
-  }
-}
-
-@mixin table-wrapper {
-  &-wrapper {
-    height: calc(100% - 48px);
-    .el-table__empty-block {
-      width: 100% !important;
-    }
   }
 }

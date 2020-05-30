@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './plugins/element.js'
-import TUi from '../packages'
+import TUi from 't-ui'
+import 't-ui/theme/src/index.scss'
 
 Vue.use(TUi)
 
