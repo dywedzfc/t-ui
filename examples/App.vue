@@ -12,7 +12,7 @@
     <HelloWorld msg="Welcome to Your Vue.js App" />
     <div class="body-wrapper">
       <demo-block></demo-block>
-      <t-query-panel class="query-panel" border>
+      <t-query-panel class="query-panel" size="medium" border>
         <template v-slot:querybar>
           <el-form-item label="审批人">
             <el-input v-model="query.user" placeholder="审批人"></el-input>

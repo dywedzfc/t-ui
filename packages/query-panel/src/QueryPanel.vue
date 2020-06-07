@@ -6,6 +6,7 @@
       v-if="$slots.querybar"
       :model="model"
       :type="type"
+      :size="size"
       ref="querybar"
     >
       <slot name="querybar"></slot>
@@ -25,6 +26,7 @@ export default {
   props: {
     type: String,
     model: Object,
+    size: { type: String },
     footer: {
       type: [String, Number]
     },
