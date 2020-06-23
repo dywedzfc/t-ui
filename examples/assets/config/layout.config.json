@@ -1,0 +1,81 @@
+{
+  "attributes": [
+    {
+      "parameter": "border",
+      "directions": "是否显示边框线",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "lockSize",
+      "directions": "是否锁定内部面板大小，支持 .sync 修饰符",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "header",
+      "directions": "头部高度",
+      "type": "String / Number",
+      "optional": "—",
+      "default": "50"
+    },
+    {
+      "parameter": "headerClass",
+      "directions": "头部class name",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "headerAuto",
+      "directions": "header高度自适应",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "left",
+      "directions": "左侧面板宽度",
+      "type": "String / Number",
+      "optional": "—",
+      "default": "300"
+    },
+    {
+      "parameter": "leftStrip",
+      "directions": "左侧面板控制条",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "right",
+      "directions": "右侧面板宽度",
+      "type": "String, Number",
+      "optional": "—",
+      "default": "300"
+    },
+    {
+      "parameter": "rightStrip",
+      "directions": "右侧面板控制条",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "footer",
+      "directions": "底部面板高度",
+      "type": "String, Number",
+      "optional": "—",
+      "default": "40"
+    },
+    {
+      "parameter": "footerStrip",
+      "directions": "是否开启底部面板拖拽条",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    }
+  ]
+}

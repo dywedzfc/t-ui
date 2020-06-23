@@ -1,6 +1,6 @@
 <!-- 查询面板 -->
 <template>
-  <div class="t-query-panel" v-scrollbar>
+  <div class="t-query-panel">
     <t-query-bar
       class="t-query-box"
       v-if="$slots.querybar"

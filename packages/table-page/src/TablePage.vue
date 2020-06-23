@@ -2,9 +2,10 @@
 <template>
   <div class="t-table-panel">
     <el-table
-      class="t-table "
+      class="t-table"
       :class="{ 't-scrollbar': scrollbar }"
       :data="filterTableList"
+      :height="tableHeight"
       :max-height="maxHeigh"
       :stripe="stripe"
       :border="border"
@@ -30,9 +31,9 @@
       @header-contextmenu="handleHeaderContextmenu"
       @header-dragend="handleHeaderDragend"
       v-loading="loading"
-      v-scrollbar:table="scrollbar"
       :style="{ height: tableHeight }"
     >
+      <!-- v-scrollbar:table="scrollbar" -->
       <slot></slot>
     </el-table>
     <el-pagination

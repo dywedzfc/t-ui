@@ -1,4 +1,9 @@
 import Layout from './layout'
+import Container from './container'
+import Header from './container-header'
+import Aside from './container-aside'
+import Body from './container-body'
+import Footer from './container-footer'
 import GridLayout from './grid-layout'
 import TablePage from './table-page'
 import TableIndex from './table-index'
@@ -10,6 +15,11 @@ import Dialog from './dialog'
 
 const components = [
   Layout,
+  Container,
+  Header,
+  Aside,
+  Body,
+  Footer,
   GridLayout,
   TablePage,
   TableIndex,

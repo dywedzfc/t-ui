@@ -1,0 +1,110 @@
+{
+  "attributes": [
+    {
+      "parameter": "type",
+      "directions": "行内表单模式",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "model",
+      "directions": "表单数据对象",
+      "type": "Object",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "size",
+      "directions": "用于控制该表单内组件的尺寸",
+      "type": "String",
+      "optional": "medium / small / mini",
+      "default": "small"
+    }
+  ],
+  "formItemAttributes": [
+    {
+      "parameter": "prop",
+      "directions": "表单域 model 字段，在使用 validate、resetFields 方法的情况下，该属性是必填的",
+      "type": "String",
+      "optional": "传入 Form 组件的 model 中的字段",
+      "default": "—"
+    },
+    {
+      "parameter": "label",
+      "directions": "标签文本",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "label-width",
+      "directions": "表单域标签的的宽度，例如 '50px'。支持 auto。",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "required",
+      "directions": "是否必填，如不设置，则会根据校验规则自动生成",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "rules",
+      "directions": "表单验证规则",
+      "type": "Object",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "error",
+      "directions": "表单域验证错误信息, 设置该值会使表单验证状态变为error，并显示该错误信息",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "show-message",
+      "directions": "是否显示校验错误信息",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "true"
+    },
+    {
+      "parameter": "inline-message",
+      "directions": "以行内形式展示校验信息",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "size",
+      "directions": "用于控制该表单域下组件的尺寸",
+      "type": "String",
+      "optional": "medium / small / mini",
+      "default": "—"
+    }
+  ],
+  "formItemSlots": [
+    { "name": "—", "directions": "Form Item 的内容" },
+    { "name": "label", "directions": "标签文本的内容" }
+  ],
+  "formItemScopedSlots": [
+    {
+      "name": "error",
+      "directions": "自定义表单校验信息的显示方式，参数为 { error }"
+    }
+  ],
+  "formItemMethods": [
+    {
+      "name": "resetField",
+      "directions": "对该表单项进行重置，将其值重置为初始值并移除校验结果"
+    },
+    {
+      "name": "clearValidate",
+      "directions": "移除该表单项的校验结果"
+    }
+  ]
+}

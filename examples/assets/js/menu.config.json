@@ -1,0 +1,66 @@
+{
+  "system": [
+    {
+      "id": "component",
+      "title": "组件",
+      "type": "router",
+      "path": "/component"
+    }
+  ],
+  "menu": [
+    { "id": "devGuide", "title": "开发指南", "type": "title" },
+    {
+      "id": "installation",
+      "title": "安装",
+      "type": "router",
+      "path": "/component/installation"
+    },
+    { "id": "component", "title": "组件", "type": "title" },
+    { "id": "basic", "title": "basic", "type": "group" },
+    {
+      "id": "layout",
+      "title": "边界布局",
+      "type": "router",
+      "path": "/component/layout"
+    },
+    {
+      "id": "gridLayout",
+      "title": "网格布局",
+      "type": "router",
+      "path": "/component/gridLayout"
+    },
+    { "id": "pane", "title": "pane", "type": "group" },
+    {
+      "id": "queryBar",
+      "title": "查询框",
+      "type": "router",
+      "path": "/component/queryBar"
+    },
+    {
+      "id": "queryPanel",
+      "title": "查询面板",
+      "type": "router",
+      "path": "/component/queryPanel"
+    },
+    {
+      "id": "dragPicture",
+      "title": "图片拖拽控件",
+      "type": "router",
+      "path": "/component/dragPicture"
+    },
+    { "id": "data", "title": "data", "type": "group" },
+    {
+      "id": "tablePage",
+      "title": "分页表格",
+      "type": "router",
+      "path": "/component/tablePage"
+    },
+    { "id": "others", "title": "others", "type": "group" },
+    {
+      "id": "dialog",
+      "title": "对话框",
+      "type": "router",
+      "path": "/component/dialog"
+    }
+  ]
+}

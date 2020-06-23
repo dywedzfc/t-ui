@@ -1,0 +1,44 @@
+{
+  "attributes": [
+    {
+      "parameter": "type",
+      "directions": "行内表单模式",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "model",
+      "directions": "表单数据对象",
+      "type": "Object",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "size",
+      "directions": "用于控制该表单内组件的尺寸",
+      "type": "String",
+      "optional": "medium / small / mini",
+      "default": "small"
+    },
+    {
+      "parameter": "footer",
+      "directions": "页脚高度",
+      "type": "String / Number",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "minHeight",
+      "directions": "最小高度",
+      "type": "String / Number",
+      "optional": "—",
+      "default": "—"
+    }
+  ],
+  "slots": [
+    { "name": "querybar", "directions": "QueryBar 的内容" },
+    { "name": "—", "directions": "QueryPanel 的内容" },
+    { "name": "footer", "directions": "底部面板内容" }
+  ]
+}

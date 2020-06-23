@@ -1,0 +1,32 @@
+{
+  "attributes": [
+    {
+      "parameter": "border",
+      "directions": "是否显示边框线",
+      "type": "Boolean",
+      "optional": "—",
+      "default": "false"
+    },
+    {
+      "parameter": "src",
+      "directions": "图片路径",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "noticeSrc",
+      "directions": "缩略图路径",
+      "type": "String",
+      "optional": "—",
+      "default": "—"
+    },
+    {
+      "parameter": "noticePosition",
+      "directions": "缩略图位置",
+      "type": "String",
+      "optional": "top-left / top-right / bottom-left / bottom-right",
+      "default": "bottom-right"
+    }
+  ]
+}

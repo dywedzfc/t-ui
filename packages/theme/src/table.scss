@@ -15,42 +15,42 @@
   height: 100%;
   @include row-spacing($margin);
 
-  &.el-table {
-    &--medium {
-      .el-table {
-        &__body {
-          &-wrapper {
-            height: calc(100% - 44px);
-          }
-        }
-      }
-    }
-    &--small {
-      .el-table {
-        &__body {
-          &-wrapper {
-            height: calc(100% - 40px);
-          }
-        }
-      }
-    }
-    &--mini {
-      .el-table {
-        &__body {
-          &-wrapper {
-            height: calc(100% - 36px);
-          }
-        }
-      }
-    }
-  }
+  // &.el-table {
+  //   &--medium {
+  //     .el-table {
+  //       &__body {
+  //         &-wrapper {
+  //           height: calc(100% - 44px);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   &--small {
+  //     .el-table {
+  //       &__body {
+  //         &-wrapper {
+  //           height: calc(100% - 40px);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   &--mini {
+  //     .el-table {
+  //       &__body {
+  //         &-wrapper {
+  //           height: calc(100% - 36px);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   .el-table {
     &__empty-block {
       height: 100%;
     }
     &__body {
-      @include table-wrapper;
+      // @include table-wrapper;
 
       .el-button {
         &--small,

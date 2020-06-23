@@ -1,0 +1,11 @@
+{
+  "attributes": [
+    {
+      "parameter": "margin",
+      "directions": "间距",
+      "type": "Number / String",
+      "optional": "—",
+      "default": "0"
+    }
+  ]
+}
