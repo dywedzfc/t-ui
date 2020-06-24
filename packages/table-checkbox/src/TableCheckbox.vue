@@ -1,7 +1,6 @@
 <template>
   <el-table-column
-    type="index"
-    :label="label"
+    type="selection"
     :width="width"
     :fixed="fixed"
     :resizable="resizable"
@@ -11,11 +10,10 @@
 
 <script>
 export default {
-  name: 'TTableIndex',
+  name: 'TTableCheckbox',
   props: {
-    label: { type: String, default: '编号' },
-    width: { type: String, default: '80' },
-    fixed: { type: [String, Boolean], default: true },
+    width: { type: String, default: '60' },
+    fixed: { type: [String, Boolean] },
     resizable: { type: Boolean, default: false }
   }
 }

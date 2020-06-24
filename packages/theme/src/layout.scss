@@ -239,6 +239,8 @@
     display: block;
     flex: 1;
     flex-basis: auto;
+
+    width: 0;
     box-sizing: border-box;
 
     ~ .t-aside {

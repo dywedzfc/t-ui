@@ -7,7 +7,10 @@ import Footer from './container-footer'
 import GridLayout from './grid-layout'
 import TablePage from './table-page'
 import TableIndex from './table-index'
+import TableCheckbox from './table-checkbox'
+import TableColumn from './table-column'
 import TableOperate from './table-operate'
+import TableButton from './table-button'
 import QueryBar from './query-bar'
 import QueryPanel from './query-panel'
 import DragPicture from './drag-picture'
@@ -23,7 +26,10 @@ const components = [
   GridLayout,
   TablePage,
   TableIndex,
+  TableCheckbox,
+  TableColumn,
   TableOperate,
+  TableButton,
   QueryBar,
   QueryPanel,
   DragPicture,
