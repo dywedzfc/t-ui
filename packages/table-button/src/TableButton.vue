@@ -7,6 +7,7 @@
     :autofocus="autofocus"
     type="text"
     :style="{ color }"
+    @click="handleTableButtonClick"
   >
     <slot></slot>
   </el-button>
@@ -21,6 +22,11 @@ export default {
     icon: String,
     autofocus: Boolean,
     color: String
+  },
+  methods: {
+    handleTableButtonClick() {
+      if (this.$listeners['click']) this.$emit('click')
+    }
   }
 }
 </script>
