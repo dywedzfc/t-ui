@@ -7,6 +7,7 @@
       :model="model"
       :type="type"
       :size="size"
+      :label-width="labelWidth"
       ref="querybar"
     >
       <slot name="querybar"></slot>
@@ -27,6 +28,7 @@ export default {
     type: String,
     model: Object,
     size: { type: String },
+    labelWidth: { type: String },
     footer: {
       type: [String, Number]
     },

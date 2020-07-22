@@ -46,7 +46,7 @@ export default {
     modalAppendToBody: { type: Boolean, default: true },
     lockScroll: { type: Boolean, default: true },
     customClass: String,
-    closeOnClickModal: { type: Boolean, default: true },
+    closeOnClickModal: { type: Boolean, default: false },
     closeOnPressEscape: { type: Boolean, default: true },
     showClose: { type: Boolean, default: true },
     beforeClose: Function,

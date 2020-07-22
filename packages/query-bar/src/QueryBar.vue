@@ -1,6 +1,12 @@
 <!-- 查询框 -->
 <template>
-  <el-form class="t-query-bar" :model="model" :size="size" :inline="hasInline">
+  <el-form
+    class="t-query-bar"
+    :model="model"
+    :size="size"
+    :label-width="labelWidth"
+    :inline="hasInline"
+  >
     <slot></slot>
   </el-form>
 </template>
@@ -11,10 +17,8 @@ export default {
   props: {
     type: String,
     model: Object,
-    size: {
-      type: String,
-      default: 'small'
-    }
+    size: { type: String, default: 'small' },
+    labelWidth: { type: String }
   },
   computed: {
     hasInline() {
