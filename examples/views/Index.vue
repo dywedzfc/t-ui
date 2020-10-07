@@ -1,84 +1,37 @@
 <template>
-  <!-- <t-layout class="index-wrapper" header="80" left="240" border>
-    <template v-slot:header>
-      <t-header></t-header>
-    </template>
-    <div class="index-body">
-      <router-view />
-    </div>
-  </t-layout> -->
   <t-container class="index-wrapper" border>
     <t-header height="80px">header</t-header>
     <t-container>
-      <t-aside width="240px">aside</t-aside>
+      <t-aside width="140px">aside</t-aside>
       <t-body>
-        <t-table-page
-          :loading="table.loading"
-          :data="table.data"
-          :page-size="table.pageSize"
-        >
+        <t-table-page :loading="table.loading" :data="table.data" :page-size="table.pageSize">
           <t-table-checkbox fixed />
           <t-table-index />
           <t-table-column prop="name" width="160" fixed>
-            <template v-slot:header>
+            <template #header>
               <el-input value="姓名"></el-input>
             </template>
           </t-table-column>
-          <el-table-column
-            prop="username"
-            label="账号"
-            min-width="180"
-            align="center"
-          />
-          <el-table-column
-            prop="gender"
-            label="性别"
-            min-width="80"
-            align="center"
-          />
-          <el-table-column
-            prop="duties"
-            label="职务"
-            min-width="140"
-            align="center"
-          />
-          <el-table-column
-            prop="birthday"
-            label="出生日期"
-            min-width="140"
-            align="center"
-          />
-          <el-table-column
-            prop="politic"
-            label="政治面貌"
-            min-width="140"
-            align="center"
-          />
-          <el-table-column
-            prop="education"
-            label="学历"
-            min-width="160"
-            align="center"
-          />
-          <el-table-column
-            prop="company"
-            label="所属单位"
-            min-width="280"
-            align="center"
-          />
+          <t-table-column prop="username" label="账号" min-width="180" />
+          <t-table-column prop="gender" label="性别" min-width="80" />
+          <t-table-column prop="duties" label="职务" min-width="140" />
+          <t-table-column prop="birthday" label="出生日期" min-width="140" />
+          <t-table-column prop="politic" label="政治面貌" min-width="140" />
+          <t-table-column prop="education" label="学历" min-width="160" />
+          <t-table-column prop="company" label="所属单位" min-width="280" />
           <t-table-operate>
-            <template v-slot:header>
-              <el-button type="success">添加</el-button>
-            </template>
-            <template v-slot="">
-              <t-table-button color="#67C23A">详情</t-table-button>
+            <!-- <template v-slot="scope">
+              <div>123{{ scope.row }}</div>
+            </template> -->
+            <template #default="{ row }">
+              <t-table-button color="#67C23A" @click="handleDetailsClick(row)">详情</t-table-button>
               <t-table-button icon="el-icon-edit" />
               <t-table-button icon="el-icon-delete" color="#f56c6c" />
             </template>
           </t-table-operate>
         </t-table-page>
       </t-body>
-      <t-aside>aside</t-aside>
+      <t-aside width="100px">aside</t-aside>
     </t-container>
     <t-footer min-height="40px">footer</t-footer>
   </t-container>
@@ -249,6 +202,9 @@ export default {
     this.menu = getMenuList()
   },
   methods: {
+    handleDetailsClick(item) {
+      console.info(item.name)
+    },
     capitalize(value) {
       return value.substring(0, 1).toUpperCase() + value.substring(1)
     }

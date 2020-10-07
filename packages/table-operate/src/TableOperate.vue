@@ -7,10 +7,10 @@
     align="center"
     class-name="t-table-operate"
   >
-    <template v-if="$slots.default">
-      <slot></slot>
+    <template #default="{row}">
+      <slot name="default" :row="row"></slot>
     </template>
-    <template v-if="$slots.header" v-slot:header>
+    <template v-if="$slots.header" #header>
       <slot name="header"></slot>
     </template>
   </el-table-column>
@@ -24,6 +24,11 @@ export default {
     width: { type: String, default: '120' },
     fixed: { type: [String, Boolean], default: 'right' },
     resizable: { type: Boolean, default: false }
+  },
+  methods: {
+    tableColumnData(item) {
+      console.info('item:', item, this.$refs['slot-body'])
+    }
   }
 }
 </script>

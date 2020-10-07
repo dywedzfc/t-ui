@@ -31,7 +31,7 @@
     <template v-if="$slots.default">
       <slot></slot>
     </template>
-    <template v-if="$slots.header" v-slot:header>
+    <template v-if="$slots.header" #header>
       <slot name="header"></slot>
     </template>
   </el-table-column>
