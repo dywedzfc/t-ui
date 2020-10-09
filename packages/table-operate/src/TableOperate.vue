@@ -7,11 +7,20 @@
     align="center"
     class-name="t-table-operate"
   >
-    <template #default="{row}">
-      <slot name="default" :row="row"></slot>
+    <template #default="{$index,row,column,store,_self}">
+      <slot
+        name="default"
+        :$index="$index"
+        :column="column"
+        :_self="_self"
+        :store="store"
+        :row="row"
+      ></slot>
     </template>
-    <template v-if="$slots.header" #header>
-      <slot name="header"></slot>
+    <template #header="{$index,column,store,_self}">
+      <slot name="header" :$index="$index" :column="column" :_self="_self" :store="store">
+        {{ column.label }}
+      </slot>
     </template>
   </el-table-column>
 </template>

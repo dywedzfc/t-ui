@@ -28,11 +28,15 @@
     :filterMethod="filterMethod"
     :filteredValue="filteredValue"
   >
-    <template v-if="$slots.default">
-      <slot></slot>
+    <template #default="{$index,row,column,store,_self}">
+      <slot :$index="$index" :column="column" :_self="_self" :store="store" :row="row">
+        {{ row[column.property] }}
+      </slot>
     </template>
-    <template v-if="$slots.header" #header>
-      <slot name="header"></slot>
+    <template #header="{$index,column,store,_self}">
+      <slot name="header" :$index="$index" :column="column" :_self="_self" :store="store">
+        {{ column.label }}
+      </slot>
     </template>
   </el-table-column>
 </template>
@@ -54,7 +58,7 @@ export default {
     sortMethod: Function,
     sortBy: [String, Array, Function],
     sortOrders: Array,
-    resizable: { type: Boolean },
+    resizable: { type: Boolean, default: true },
     formatter: Function,
     showOverflowTooltip: Boolean,
     align: { type: String, default: 'center' },
@@ -68,6 +72,11 @@ export default {
     filterMultiple: Boolean,
     filterMethod: Function,
     filteredValue: Array
+  },
+  methods: {
+    pppp(item) {
+      console.info('info:', item)
+    }
   }
 }
 </script>
