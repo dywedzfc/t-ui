@@ -32,6 +32,7 @@
       @header-dragend="handleHeaderDragend"
       v-loading="loading"
       :style="{ height: tableHeight }"
+      ref="table"
     >
       <!-- v-scrollbar:table="scrollbar" -->
       <slot></slot>
@@ -200,13 +201,15 @@ export default {
     }
   },
   watch: {
-    loading(value) {
-      const flag = value === true || value === false
-      if (flag && this.pageTotal === undefined) this.currentPage = 1
+    data() {
+      if (this.pageTotal === undefined) this.currentPage = 1
+    },
+    loading() {
+      if (this.pageTotal === undefined) this.currentPage = 1
+      // if (value == false && this.pageTotal === undefined) this.currentPage = 1
     },
     currentPage(value) {
-      if (this.$listeners['update:real-time-page'])
-        this.$emit('update:real-time-page', value)
+      if (this.$listeners['update:real-time-page']) this.$emit('update:real-time-page', value)
     },
     realTimePage(value) {
       this.currentPage = value
@@ -233,8 +236,7 @@ export default {
      * @param selection 选中的数据
      */
     handleSelectionChange(selection) {
-      if (this.$listeners['selection-change'])
-        this.$emit('selection-change', selection)
+      if (this.$listeners['selection-change']) this.$emit('selection-change', selection)
     },
     /**
      * 当某一行被点击时会触发该事件
@@ -243,8 +245,7 @@ export default {
      * @param event
      */
     handleRowClick(row, column, event) {
-      if (this.$listeners['row-click'])
-        this.$emit('row-click', row, column, event)
+      if (this.$listeners['row-click']) this.$emit('row-click', row, column, event)
     },
     /**
      * 当某一行被鼠标右键点击时会触发该事件
@@ -253,8 +254,7 @@ export default {
      * @param event
      */
     handleRowContextmenu(row, column, event) {
-      if (this.$listeners['row-contextmenu'])
-        this.$emit('row-contextmenu', row, column, event)
+      if (this.$listeners['row-contextmenu']) this.$emit('row-contextmenu', row, column, event)
     },
     /**
      * 当某一行被双击时会触发该事件
@@ -263,8 +263,7 @@ export default {
      * @param event
      */
     handleRowDblclick(row, column, event) {
-      if (this.$listeners['row-dblclick'])
-        this.$emit('row-dblclick', row, column, event)
+      if (this.$listeners['row-dblclick']) this.$emit('row-dblclick', row, column, event)
     },
     /**
      * 当某一列的表头被点击时会触发该事件
@@ -272,8 +271,7 @@ export default {
      * @param event
      */
     handleHeaderClick(column, event) {
-      if (this.$listeners['header-click'])
-        this.$emit('header-click', column, event)
+      if (this.$listeners['header-click']) this.$emit('header-click', column, event)
     },
     /**
      * 当某一列的表头被鼠标右键点击时触发该事件
@@ -281,8 +279,7 @@ export default {
      * @param event
      */
     handleHeaderContextmenu(column, event) {
-      if (this.$listeners['header-contextmenu'])
-        this.$emit('header-contextmenu', column, event)
+      if (this.$listeners['header-contextmenu']) this.$emit('header-contextmenu', column, event)
     },
     /**
      * 当拖动表头改变了列的宽度的时候会触发该事件
@@ -301,6 +298,9 @@ export default {
      */
     handlePaginationCurrentChange(index) {
       this.currentPage = index
+      const tableWrapper = this.$refs.table.$el.querySelector('.el-table__body-wrapper')
+      tableWrapper.scrollTop = 0
+      tableWrapper.scrollLeft = 0
       if (this.pageTotal && this.$listeners['current-change'])
         this.$emit('current-change', {
           currentPage: index,
