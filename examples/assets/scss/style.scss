@@ -121,9 +121,18 @@ body {
     }
   }
   &-body {
-    overflow: auto;
-    height: 100%;
+    position: relative;
+    width: 100% !important;
+    // overflow: auto;
+    // height: 100%;
   }
+}
+.flex-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .page-container {

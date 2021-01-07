@@ -14,7 +14,7 @@
     :sortBy="sortBy"
     :sortOrders="sortOrders"
     :resizable="resizable"
-    :formatter="formatter"
+    :formatter="formatterData"
     :showOverflowTooltip="showOverflowTooltip"
     :align="align"
     :headerAlign="headerAlign"
@@ -73,9 +73,14 @@ export default {
     filterMethod: Function,
     filteredValue: Array
   },
+  mounted() {
+    this.$emit('formatter')
+    // this.formatterData()
+    // console.info('init:',, this.width, this.prop)
+  },
   methods: {
-    pppp(item) {
-      console.info('info:', item)
+    formatterData() {
+      console.info('info:', this.formatter, this.$emit('formatter'))
     }
   }
 }

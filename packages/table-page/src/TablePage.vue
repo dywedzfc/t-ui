@@ -160,7 +160,8 @@ export default {
      */
     pageTotal: Number,
     prevText: String,
-    nextText: String
+    nextText: String,
+    firstPage: Boolean
   },
   data() {
     return {
@@ -178,8 +179,8 @@ export default {
     filterTableList() {
       const { pageTotal, pageStandard } = this
       const data = this.data || []
-      const flag = !pageSize && data.length >= pageStandard
       const pageSize = this.getPageSize
+      const flag = !pageSize && data.length >= pageStandard
       if (flag || (pageSize && !pageTotal)) {
         const currentPage = this.currentPage
         const pageIndex = currentPage - 1
@@ -202,11 +203,12 @@ export default {
   },
   watch: {
     data() {
-      if (this.pageTotal === undefined) this.currentPage = 1
-    },
-    loading() {
-      if (this.pageTotal === undefined) this.currentPage = 1
-      // if (value == false && this.pageTotal === undefined) this.currentPage = 1
+      const currentPage = Math.ceil(this.data.length / this.pageSize)
+      if (this.currentPage > currentPage) this.currentPage = currentPage
+      if (this.firstPage && this.pageTotal === undefined) this.currentPage = 1
+      const tableWrapper = this.$refs.table.$el.querySelector('.el-table__body-wrapper')
+      tableWrapper.scrollTop = 0
+      tableWrapper.scrollLeft = 0
     },
     currentPage(value) {
       if (this.$listeners['update:real-time-page']) this.$emit('update:real-time-page', value)

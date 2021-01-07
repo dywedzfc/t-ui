@@ -103,3 +103,12 @@ lib/*.map
 
 # TernJS port file
 .tern-port
+lib/index.css
+lib/index.umd.js
+lib/index.umd.min.js
+lib/demo.html
+lib/index.common.js
+packages/theme/.DS_Store
+packages/table-operate/.DS_Store
+packages/.DS_Store
+.DS_Store

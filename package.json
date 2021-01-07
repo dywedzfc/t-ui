@@ -1,6 +1,6 @@
 {
   "name": "@ipeak/t-ui",
-  "version": "0.1.46",
+  "version": "0.1.50",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
