@@ -80,7 +80,8 @@ export default {
   },
   methods: {
     formatterData() {
-      console.info('info:', this.formatter, this.$emit('formatter'))
+      // console.info('info:', this.formatter)
+      this.$emit('formatter')
     }
   }
 }

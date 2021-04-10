@@ -112,3 +112,5 @@ packages/theme/.DS_Store
 packages/table-operate/.DS_Store
 packages/.DS_Store
 .DS_Store
+.history
+package-lock.json

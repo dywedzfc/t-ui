@@ -199,11 +199,16 @@ export default {
       const { pageTotal, pageSize, pageStandard } = this
       if (pageTotal && !pageSize) return pageStandard
       return pageSize || 10
+    },
+    // 远程页数或数据页数
+    remotelyPageSizeTPS() {
+      if (this.pageTotal === undefined) return this.data.length / this.pageSize
+      return this.pageTotal / this.pageSize
     }
   },
   watch: {
     data() {
-      const currentPage = Math.ceil(this.data.length / this.pageSize)
+      const currentPage = Math.ceil(this.remotelyPageSizeTPS)
       if (this.currentPage > currentPage) this.currentPage = currentPage
       if (this.firstPage && this.pageTotal === undefined) this.currentPage = 1
       const tableWrapper = this.$refs.table.$el.querySelector('.el-table__body-wrapper')

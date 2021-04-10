@@ -1,6 +1,6 @@
 {
   "name": "@ipeak/t-ui",
-  "version": "0.1.50",
+  "version": "0.1.51",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -15,6 +15,7 @@
     "lib"
   ],
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "element-ui": "^2.4.5",
     "image-js": "^0.21.9",

@@ -1,6 +1,27 @@
 @import "./common/base.scss";
 @import "./mixins/base.scss";
 
+.el-form {
+  &.el-form--inline {
+    .el-form-item {
+      margin-bottom: $margin;
+    }
+    .el-form-item--mini,
+    .el-form-item--small {
+      &.el-form-item {
+        margin-bottom: $margin;
+      }
+    }
+  }
+
+  .el-form-item {
+    margin-bottom: $margin;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .t-query {
   $height: 54px;
 
@@ -17,6 +38,10 @@
 
     .el-form-item {
       margin-bottom: $margin;
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       &.el-form-item--mini,
       &.el-form-item--small {
@@ -51,9 +76,11 @@
 
   .el-form {
     &-item {
-      &:last-child {
-        margin-bottom: 0;
-      }
+      // margin-bottom: 15px;
+
+      // &:last-child {
+      //   margin-bottom: 0;
+      // }
 
       &.el-form-item--mini,
       &.el-form-item--small {

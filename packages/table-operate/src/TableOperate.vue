@@ -35,8 +35,8 @@ export default {
     resizable: { type: Boolean, default: false }
   },
   methods: {
-    tableColumnData(item) {
-      console.info('item:', item, this.$refs['slot-body'])
+    tableColumnData() {
+      // console.info('item:', item, this.$refs['slot-body'])
     }
   }
 }

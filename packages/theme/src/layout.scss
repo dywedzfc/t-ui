@@ -175,7 +175,8 @@
     }
   }
   .t-aside {
-    display: flex;
+    position: relative;
+    // display: flex;
 
     &:hover {
       .t-aside-control-strip {
@@ -195,10 +196,14 @@
       flex: 1;
     }
     &-control-strip {
-      position: relative;
-      display: flex;
+      position: absolute;
+      top: 0;
+      right: 0;
+      // position: relative;
+      // display: flex;
 
       width: 5px;
+      height: 100%;
       border-left: 1px solid #eeeeee;
       border-right: 1px solid #eeeeee;
       background-color: #f6f6f6;
@@ -248,10 +253,11 @@
 
       &.is-border {
         border-left: 1px solid #eeeeee;
+        border-right: none;
 
-        &:last-child {
-          border-right: none;
-        }
+        // &:last-child {
+        //   border-right: none;
+        // }
 
         .t-aside-control-strip {
           border-left: none;
@@ -264,6 +270,7 @@
       }
 
       .t-aside-control-strip {
+        right: auto;
         // border-left: none;
         // border-right: 1px solid #eeeeee;
 
@@ -277,7 +284,8 @@
     }
   }
   .t-footer {
-    display: flex;
+    position: relative;
+    // display: flex;
     flex-direction: column;
 
     &:hover {
@@ -295,13 +303,16 @@
     }
 
     &-wrapper {
-      flex: 1;
+      // flex: 1;
+      height: 100%;
     }
     &-control-strip {
-      position: relative;
-      display: flex;
+      position: absolute;
+      // display: flex;
       cursor: ns-resize;
+      z-index: 10;
 
+      width: 100%;
       height: 5px;
       border-bottom: 1px solid #eeeeee;
       background-color: #f6f6f6;
@@ -332,6 +343,18 @@
   .t-footer {
     &-control-strip {
       opacity: 0;
+    }
+  }
+
+  .t-container ~ .t-aside {
+    &.is-border {
+      border-left: 1px solid #eeeeee;
+      border-right: none;
+
+      .t-aside-control-strip {
+        left: 0;
+        right: auto;
+      }
     }
   }
 }

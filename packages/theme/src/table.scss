@@ -20,9 +20,19 @@
   .el-table {
     &__empty-block {
       height: 100%;
+
+      .el-table__empty-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
     &__body {
       // @include table-wrapper;
+
+      &__body-wrapper {
+        position: static;
+      }
 
       .el-button {
         &--small,
