@@ -1,16 +1,15 @@
 {
   "name": "@ipeak/t-ui",
-  "version": "0.1.51",
+  "version": "0.1.53",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --target lib --name index --dest lib packages/index.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:lib": "vue-cli-service build --target lib --name index --dest lib packages/index.js"
   },
   "main": "lib/index.umd.min.js",
-  "style": "lib/style.css",
   "files": [
     "lib"
   ],
@@ -20,12 +19,14 @@
     "element-ui": "^2.4.5",
     "image-js": "^0.21.9",
     "underscore": "^1.10.2",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-plugin-unit-jest": "^4.3.1",
+    "@vue/cli-plugin-vuex": "^4.5.12",
     "@vue/cli-service": "^4.3.1",
     "@vue/test-utils": "1.0.0-beta.31",
     "babel-eslint": "^10.1.0",
@@ -48,5 +49,6 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "style": "lib/style.css"
 }

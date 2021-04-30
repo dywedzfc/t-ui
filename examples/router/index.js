@@ -10,11 +10,20 @@ const routes = [
     component: () => import('../views/Index.vue'),
     // redirect: { path: '/yxgb', name: '优秀年轻干部报表' },
     children: [
-      // {
-      //   path: '/yxgb',
-      //   name: '优秀年轻干部报表',
-      //   component: () => import('views/OutstandCadre.vue')
-      // }
+      { path: '/home', name: '首页', component: { render: h => h('div', '首页') } },
+      { path: '/xtsz/yhgl', name: '用户管理', component: { render: h => h('div', '用户管理') } },
+      { path: '/xtsz/qxgl', name: '权限管理', component: { render: h => h('div', '权限管理') } },
+      { path: '/xtsz/rzgl', name: '日志管理', component: { render: h => h('div', '日志管理') } },
+      { path: '/xtsz/csgl/ceshi1', name: '测试1', component: { render: h => h('div', '测试1') } },
+      { path: '/xtsz/csgl/ceshi2', name: '测试2', component: { render: h => h('div', '测试2') } },
+      { path: '/xtsz/csgl/ceshi3', name: '测试3', component: { render: h => h('div', '测试3') } },
+      { path: '/xtsz/csgl/ceshi4', name: '测试4', component: { render: h => h('div', '测试4') } },
+      { path: '/xtsz/csgl/ceshi5', name: '测试5', component: { render: h => h('div', '测试5') } },
+      { path: '/xtsz/csgl/ceshi6', name: '测试6', component: { render: h => h('div', '测试6') } },
+      { path: '/xtsz/csgl/ceshi7', name: '测试7', component: { render: h => h('div', '测试7') } },
+      { path: '/xtsz/csgl/ceshi8', name: '测试8', component: { render: h => h('div', '测试8') } },
+      { path: '/xtsz/csgl/ceshi9', name: '测试9', component: { render: h => h('div', '测试9') } },
+      { path: '/xtsz/csgl/ceshi10', name: '测试10', component: { render: h => h('div', '测试10') } }
     ]
   },
   {

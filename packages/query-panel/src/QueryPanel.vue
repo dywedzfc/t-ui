@@ -52,6 +52,9 @@ export default {
       window.addEventListener('resize', () => this.setQueryWapperHeight())
     })
   },
+  activated() {
+    this.setQueryWapperHeight()
+  },
   methods: {
     setQueryWapperHeight() {
       const queryWrapper = this.$refs.wrapper

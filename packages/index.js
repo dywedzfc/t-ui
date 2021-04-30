@@ -4,6 +4,11 @@ import Header from './container-header'
 import Aside from './container-aside'
 import Body from './container-body'
 import Footer from './container-footer'
+import Menu from './menu'
+import MenuItem from './menu-item'
+import MenuItemGroup from './menu-item-group'
+import MenuItemAuto from './menu-item-auto'
+import Submenu from './submenu'
 import GridLayout from './grid-layout'
 import TablePage from './table-page'
 import TableIndex from './table-index'
@@ -23,6 +28,11 @@ const components = [
   Aside,
   Body,
   Footer,
+  Menu,
+  MenuItem,
+  MenuItemGroup,
+  MenuItemAuto,
+  Submenu,
   GridLayout,
   TablePage,
   TableIndex,
