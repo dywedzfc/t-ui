@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import _ from 'underscore'
 import store from '../../../src/store'
 
 export default {
@@ -39,7 +40,11 @@ export default {
     }
   },
   mounted() {
-    console.info('mounted:', this.uniqueOpened)
+    const path = _.filter(this.$route.path.split('/'))
+    const opened = []
+    _.each(this.data, item => path.includes(item.id) && opened.push(item.id))
+    this.opened = opened
+
     this.$store.dispatch('INIT_MENU', {
       data: this.data,
       mode: this.mode,

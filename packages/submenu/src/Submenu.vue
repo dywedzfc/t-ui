@@ -50,7 +50,7 @@ export default {
     icon: String,
     pid: String,
     type: String,
-    auth: String,
+    auth: [String, Array],
     disabled: Boolean
   },
   computed: {
@@ -80,7 +80,6 @@ export default {
       if (this.$parent && this.$parent.$data && this.$parent.$data.$name === 'TMenuItemAuto')
         className = getParentTag(this.$parent.$parent)
       else className = getParentTag(this.$parent)
-
       return className
     }
   },
@@ -88,7 +87,8 @@ export default {
   methods: {
     handleSubmenuMouseenter() {
       const { collapse, menuTrigger } = this.menu
-      const { className } = this.$parent.$el
+      let className = this.parentTag
+      // const { className } = this.$parent.$el
       if (collapse && menuTrigger == 'hover' && className.includes('t-menu--hover')) {
         this.$store.commit('SET_MENU_OPENED', this.id)
         this.showSubmenuWrapper()
@@ -96,14 +96,16 @@ export default {
     },
     handleSubmenuMouseleave() {
       const { collapse, menuTrigger } = this.menu
-      const { className } = this.$parent.$el
+      let className = this.parentTag
+      // const { className } = this.$parent.$el
       if (collapse && menuTrigger == 'hover' && className.includes('t-menu--hover')) {
         this.$store.commit('SET_MENU_OPENED', this.menu.opened)
       }
     },
     handleSubmenuTitleClick() {
       const { collapse, menuTrigger } = this.menu
-      const { className } = this.$parent.$el
+      let className = this.parentTag
+      // const { className } = this.$parent.$el
       if (collapse && menuTrigger == 'hover' && className.includes('t-menu--hover')) return
       this.$store.commit('SET_MENU_OPENED', this.id)
       // if (this.menu.menuTrigger == 'click') this.showSubmenuWrapper()

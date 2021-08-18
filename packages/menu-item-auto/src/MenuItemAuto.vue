@@ -22,7 +22,7 @@ export default {
     pid: String,
     type: String,
     path: String,
-    auth: String,
+    auth: [String, Array],
     disabled: Boolean,
     children: Array
   },

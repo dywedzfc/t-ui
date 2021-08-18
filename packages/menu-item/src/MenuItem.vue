@@ -14,13 +14,12 @@ export default {
     path: String,
     pid: String,
     type: String,
-    auth: String,
+    auth: [String, Array],
     disabled: Boolean
   },
   computed: {
     ...mapGetters(['menu']),
     hasActiveMenuItem() {
-      // console.info('menu-item:', this.path, this.$route.path, this.path == this.$route.path)
       return this.path == this.$route.path
     },
     hasCollapse() {
@@ -35,13 +34,12 @@ export default {
   },
   methods: {
     handleMenuItem() {
-      const { router, menuTrigger, openeds } = this.menu
+      const { router, collapse, menuTrigger, openeds } = this.menu
       const { id, title, icon, path, pid } = this
-      console.info('menu-item-h:', id, pid)
       this.$store.commit('SET_MENU_ACTIVE', { id, pid })
       if (path && router && path != this.$route.path) this.$router.push(path)
       if (this.$listeners['select']) this.$emit('select', { id, title, icon, path, pid })
-      if (menuTrigger == 'click') this.$store.commit('SET_MENU_OPENED', openeds)
+      if (collapse && menuTrigger == 'click') this.$store.commit('SET_MENU_OPENED', openeds)
     }
   },
   render(h) {

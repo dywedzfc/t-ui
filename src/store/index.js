@@ -40,7 +40,6 @@ export default new Vuex.Store({
       else state.menu.collapse = value
     },
     SET_MENU_ACTIVE(state, value) {
-      console.info('menu-active:', value, typeof value === 'object' && 'id' in value)
       if (value == null) return
       if (typeof value === 'string') state.menu.active = value
       if (typeof value === 'object' && 'id' in value) {
@@ -52,19 +51,13 @@ export default new Vuex.Store({
         for (let i = state.menu.opened.length - 1; 0 <= i; i--) {
           const item = state.menu.opened[i]
           const index = _.map(list, 'id').indexOf(item) // _.indexOf(list, item)
-          if (index != -1) state.menu.opened.splice(index, 1)
+          if (index != -1 && state.menu.collapse) state.menu.opened.splice(index, 1)
         }
         state.menu.active = id
-        console.info('menu-active:', list, pid)
       }
-
-      // if(id in value)
-      // const { data } = state.menu
-      // const list = _.filter(data, ({ pid: _pid }) => _pid == pid)
-      // console.info('menu-active:', list, pid)
     },
     SET_MENU_OPENED(state, value = []) {
-      const { data, uniqueOpened } = state.menu
+      const { data, uniqueOpened, opened } = state.menu
       // 删除传入已有的菜单；根据类型返回，存在或不存在的菜单列表
       function filterMenuOpened(type) {
         // const removeList = []
@@ -97,10 +90,16 @@ export default new Vuex.Store({
           if (list.length == 0) state.menu.opened = value
         } else {
           const flist = _.filter(data, item => item.id == value)
+          if (flist.length == 0) return
+          const fitem = flist[0]
           /* 找到除了自身同级菜单 */
           let list = []
-          if (flist.length && flist[0].pid)
-            list = _.filter(data, item => item.pid == flist[0].pid && item.id != value)
+
+          if (!fitem.pid) {
+            if (opened.includes(value)) state.menu.opened = []
+            else state.menu.opened = [value]
+            return
+          } else list = _.filter(data, item => item.pid == fitem.pid && item.id != value)
 
           // 判断是否存在
           const index = _.indexOf(state.menu.opened, value)
@@ -113,7 +112,10 @@ export default new Vuex.Store({
                 if (index >= 0) state.menu.opened.splice(index, 1)
               })
               state.menu.opened.push(value)
-            } else state.menu.opened = [value]
+            } else {
+              if (state.menu.opened.length) state.menu.opened.push(value)
+              else state.menu.opened = [value]
+            }
           }
         }
       }

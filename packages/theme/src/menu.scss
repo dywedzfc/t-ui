@@ -86,7 +86,7 @@
       }
     }
   }
-  &--click {
+  &--click.t-menu--collapse {
     > .t-submenu {
       position: static;
 
@@ -111,7 +111,7 @@
     min-width: 200px;
     height: 56px;
     padding: 0 20px;
-    // border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
 
     font-size: 18px;
     line-height: 56px;
@@ -119,7 +119,7 @@
     color: #303133;
 
     &:last-child {
-      border-bottom: none;
+      // border-bottom: none;
     }
     &:hover,
     &.is-active {
@@ -221,7 +221,7 @@
     min-width: 200px;
     height: 56px;
     padding: 0 20px;
-    // border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
 
     font-size: 18px;
     line-height: 56px;
