@@ -1,13 +1,13 @@
 {
   "system": [
-    {
-      "id": "component",
-      "title": "组件",
-      "type": "router",
-      "path": "/component"
-    }
+    { "id": "test", "title": "测试", "type": "router", "path": "/" },
+    { "id": "component", "title": "组件", "type": "router", "path": "/component" }
   ],
   "menu": [
+    { "id": "baseTable", "title": "表格", "path": "/test/table", "pid": "test" },
+    { "id": "baseMenu", "title": "菜单", "path": "/test/menu", "pid": "test" },
+    { "id": "baseDialog", "title": "对话框", "path": "/test/dialog", "pid": "test" },
+
     { "id": "devGuide", "title": "开发指南", "type": "title" },
     {
       "id": "installation",

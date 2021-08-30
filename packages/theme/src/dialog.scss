@@ -6,18 +6,49 @@
       }
     }
   }
+  &.minimize {
+    display: none;
+  }
+  &.maximize.t-move .el-dialog__header {
+    cursor: default;
+  }
   &.el-dialog__wrapper {
     overflow: hidden;
     height: 100%;
   }
   .el-dialog {
-    margin: 0 auto;
+    display: inline-block;
+    margin: 0;
 
     &__header {
+      position: relative;
       border-bottom: 1px solid #e4e4e4;
 
       .el-dialog__title {
         margin-left: 0;
+      }
+      .t-dialog__tool {
+        position: absolute;
+        top: 50%;
+        right: 38px;
+        display: flex;
+        align-items: center;
+        transform: translateY(-50%);
+
+        height: 18px;
+        margin-top: 1px;
+
+        .el-icon {
+          cursor: pointer;
+          margin-right: 5px;
+          &:hover {
+            color: #333333;
+          }
+        }
+      }
+      .t-dialog__minimize,
+      .t-dialog__maximize {
+        color: #909399;
       }
     }
     &__title {
@@ -35,5 +66,38 @@
     &__footer {
       border-top: 1px solid #e4e4e4;
     }
+  }
+}
+
+.t-dialog-button__minimize {
+  position: absolute;
+  top: 70vh;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #409eff;
+  cursor: pointer;
+
+  min-width: 60px;
+  max-width: 120px;
+  height: 40px;
+  padding-left: 25px;
+  padding-right: 10px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+
+  color: #ffffff;
+
+  &:hover {
+    background-color: #66b1ff;
+  }
+  > .text {
+    overflow: hidden;
+
+    width: 100%;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

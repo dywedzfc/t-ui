@@ -73,15 +73,17 @@ export default {
     filterMethod: Function,
     filteredValue: Array
   },
+  computed: {},
   mounted() {
-    this.$emit('formatter')
+    // this.$emit('formatter')
     // this.formatterData()
     // console.info('init:',, this.width, this.prop)
+    // console.info('mounted-data:', this)
   },
   methods: {
-    formatterData() {
-      // console.info('info:', this.formatter)
-      this.$emit('formatter')
+    formatterData(row, column, cellValue, index) {
+      console.info('_$formatter:', row, column, cellValue, index)
+      return row
     }
   }
 }

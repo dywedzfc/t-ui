@@ -1,13 +1,14 @@
 <!-- 对话框 -->
 <template>
   <el-dialog
-    class="t-dialog t-move"
+    :class="['t-dialog t-move', { minimize, maximize }]"
     :visible.sync="display"
     :title="title"
     :width="width"
-    :fullscreen="fullscreen"
-    :top="top"
+    :fullscreen="maximize"
+    top="0"
     :modal="modal"
+    :append-to-body="appendToBody"
     :modal-append-to-body="modalAppendToBody"
     :lock-scroll="lockScroll"
     :custom-class="customClass"
@@ -24,7 +25,20 @@
     ref="dialog"
   >
     <template v-slot:title :is="$slots.title">
-      <slot name="title"></slot>
+      <div class="el-dialog__title" v-if="$slots.title">
+        <slot name="title"></slot>
+      </div>
+      <div class="t-dialog__tool">
+        <div
+          class="t-dialog__minimize el-icon el-icon-bottom-left"
+          @click="handleMinimizeClick"
+        ></div>
+        <div
+          class="t-dialog__maximize el-icon el-icon-full-screen"
+          @click="handleMaximizeClick"
+          @mousedown.stop
+        ></div>
+      </div>
     </template>
     <slot></slot>
     <template v-slot:footer :is="$slots.footer">
@@ -41,6 +55,7 @@ export default {
     title: String,
     width: String,
     fullscreen: Boolean,
+    minscreen: Boolean,
     top: String,
     modal: { type: Boolean, default: true },
     modalAppendToBody: { type: Boolean, default: true },
@@ -66,7 +81,10 @@ export default {
         y: '',
         top: '',
         left: ''
-      }
+      },
+      appendToBody: true,
+      maximize: false,
+      minimize: false
     }
   },
   computed: {
@@ -81,13 +99,54 @@ export default {
     display(value) {
       if (this.$listeners['update:visible']) this.$emit('update:visible', value)
     },
-    visible(value) {
-      this.display = value
+    visible: {
+      handler(value) {
+        this.display = value
+      },
+      immediate: true
+    },
+    fullscreen: {
+      handler(value) {
+        this.maximize = value
+      },
+      immediate: true
+    },
+    maximize(value) {
+      if (this.$listeners['update:fullscreen']) this.$emit('update:fullscreen', value)
+    },
+    minscreen: {
+      handler(value) {
+        // if (tag) {
+        if (this.minimize && value != this.minimize) {
+          document.querySelector('.t-dialog-button__minimize').remove()
+          document.querySelector('.v-modal').style.display = null
+          this.minimize = false
+          // }
+        } else this.minimize = value
+      },
+      immediate: true
+    },
+    minimize(value) {
+      if (this.$listeners['update:minscreen']) this.$emit('update:minscreen', value)
     }
   },
   mounted() {
-    this.display = this.visible
-    this.hasCloseClickModal = this.closeOnClickModal
+    this.$nextTick(() => {
+      this.initPosition()
+      const dialog = this.$refs['dialog'].$el
+      dialog.addEventListener('DOMNodeRemoved', () => {
+        if (this.minimize) document.querySelector('.t-dialog-button__minimize').remove()
+      })
+      window.addEventListener('resize', () => {
+        const dialogTag = dialog.querySelector(this.className.dialog)
+        const { offsetWidth: bodyWidth, offsetHeight: bodyHeight } = document.body
+        const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = dialogTag
+        if (offsetTop + offsetHeight > bodyHeight) this.position.top = bodyHeight - offsetHeight
+        if (offsetLeft + offsetWidth > bodyWidth) this.position.left = bodyWidth - offsetWidth
+        dialogTag.style.top = this.position.top + 'px'
+        dialogTag.style.left = this.position.left + 'px'
+      })
+    })
   },
   methods: {
     handleDialogOpen() {
@@ -99,13 +158,44 @@ export default {
         this.dialogHeaderEvent()
       })
     },
+    handleMinimizeClick() {
+      if (this.$listeners['before-minimize']) this.$emit('before-minimize')
+      this.minimize = true
+      document.querySelector('.v-modal').style.display = 'none'
+      this.initMinimizeButton()
+      if (this.$listeners['minimized']) this.$emit('minimized')
+    },
+    handleMaximizeClick() {
+      this.maximize = !this.maximize
+      const dialogTag = this.$refs['dialog'].$el.querySelector(this.className.dialog)
+      const position = dialogTag.attributes['data-position']
+      if (this.maximize) {
+        const { top, left } = dialogTag.style
+        dialogTag.attributes['data-position'] = `${top},${left}`
+        dialogTag.style.top = null
+        dialogTag.style.left = null
+      } else if (position) {
+        const [top, left] = position.split(',')
+        if (top) dialogTag.style.top = top
+        if (left) dialogTag.style.left = left
+        dialogTag.attributes['data-position'] = undefined
+      }
+    },
     handleDialogClose() {
+      console.info('close:')
       if (this.$listeners['close']) this.$emit('close')
     },
     handleDialogClosed() {
+      console.info('closed:')
       if (this.$listeners['closed']) this.$emit('closed')
       this.dialogHeaderEvent('remove')
       this.dragMoveRemoveStyle('clear')
+    },
+    handleShowDialog() {
+      this.minimize = false
+      document.querySelector('.v-modal').style.display = null
+      const tag = document.querySelector('.t-dialog-button__minimize')
+      if (tag) tag.remove()
     },
     handleHeaderMousedown(e) {
       const { pageX, pageY } = e
@@ -115,7 +205,7 @@ export default {
       this.position.x = pageX
       this.position.y = pageY
       this.position.flag = true
-      this.dragMoveAddStyle()
+      if (!this.maximize) this.dragMoveAddStyle()
     },
     handleHeaderMouseup() {
       if (!this.position.flag) return
@@ -132,21 +222,39 @@ export default {
     },
     handleHeaderMousemove(e) {
       const { flag, x, y } = this.position
-      if (!flag) return
+      if (this.maximize || !flag) return
       const { pageX, pageY } = e
       const { dialog } = this.className
       const { topNumber, leftNumber } = this
+
       const dialogTag = this.$refs['dialog'].$el.querySelector(dialog)
-      dialogTag.style.top = topNumber + pageY - y + 'px'
-      dialogTag.style.left = leftNumber + pageX - x + 'px'
+      const { offsetWidth: bodyWidth, offsetHeight: bodyHeight } = document.body
+      const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = dialogTag
+      const position_b = pageY - (pageY - offsetTop) + offsetHeight
+      const position_r = pageX - (pageX - offsetLeft) + offsetWidth
+
+      if (offsetTop == 1 || bodyHeight == position_b) {
+        this.position.y = pageY
+        this.position.top = parseInt(dialogTag.style.top)
+      }
+      if (offsetLeft == 1 || bodyWidth - 1 == position_r) {
+        this.position.x = pageX
+        this.position.left = parseInt(dialogTag.style.left)
+      }
+
+      if (offsetTop < 1) dialogTag.style.top = 1 + 'px'
+      else if (bodyHeight - position_b <= 0 && this.position.y - pageY < 0)
+        dialogTag.style.top = bodyHeight - offsetHeight + 'px'
+      else dialogTag.style.top = topNumber + pageY - y + 'px'
+
+      if (offsetLeft < 1) dialogTag.style.left = 1 + 'px'
+      else if (bodyWidth - position_r <= 0 && this.position.x - pageX < 0)
+        dialogTag.style.left = bodyWidth - offsetWidth - 1 + 'px'
+      else dialogTag.style.left = leftNumber + pageX - x + 'px'
     },
     dialogHeaderEvent(type = 'add') {
       const { header } = this.className
-      const {
-        handleHeaderMousedown,
-        handleHeaderMouseup,
-        handleHeaderMousemove
-      } = this
+      const { handleHeaderMousedown, handleHeaderMouseup, handleHeaderMousemove } = this
       const bodyTag = document.body
       const headerTag = this.$refs['dialog'].$el.querySelector(header)
       if (type === 'add') {
@@ -174,12 +282,46 @@ export default {
         this.position.flag = false
         this.position.x = ''
         this.position.y = ''
-        this.position.top = ''
-        this.position.left = ''
+        // this.position.top = ''
+        // this.position.left = ''
       }
     },
     toNumber(value) {
       return value ? parseInt(value) : 0
+    },
+    initPosition() {
+      const { offsetWidth, offsetHeight } = document.body
+      const dialogTag = this.$refs['dialog'].$el.querySelector(this.className.dialog)
+
+      if (!this.top || this.top.indexOf('%') > 0 || this.top.indexOf('vh') > 0) {
+        if (this.top) this.position.top = offsetHeight / (100 / parseInt(this.top))
+        else this.position.top = offsetHeight / (100 / 15)
+      } else if (this.top.indexOf('px') > 0) this.position.top = parseInt(this.top)
+      dialogTag.style.top = this.position.top + 'px'
+
+      if (this.width) {
+        if (this.width.indexOf('%') > 0 && this.width.indexOf('vw') > 0)
+          this.position.left = (offsetWidth - offsetWidth * (parseInt(this.width) / 100)) / 2
+        else if (this.width.indexOf('px') > 0)
+          this.position.left = (offsetWidth - parseInt(this.width)) / 2
+      } else this.position.left = (offsetWidth - dialogTag.offsetWidth) / 4
+      dialogTag.style.left = this.position.left + 'px'
+    },
+    initMinimizeButton() {
+      let tag = document.querySelector('.t-dialog-button__minimize')
+      if (tag) tag.remove()
+      const span = document.createElement('span')
+      span.classList.add('text')
+      span.innerText = this.title
+      tag = document.createElement('div')
+      tag.classList.add('t-dialog-button__minimize')
+      tag.append(span)
+      tag.addEventListener('click', () => {
+        this.minimize = false
+        document.querySelector('.v-modal').style.display = null
+        tag.remove()
+      })
+      document.body.append(tag)
     }
   }
 }
