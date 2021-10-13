@@ -3,7 +3,12 @@
     <t-body>
       <el-button type="primary" @click="handleShowDialogClick">按钮</el-button>
     </t-body>
-    <t-dialog :visible.sync="dialog.display" :title="dialog.title" :minscreen.sync="dialog.min">
+    <t-dialog
+      :visible.sync="dialog.display"
+      :title="dialog.title"
+      :minscreen.sync="dialog.min"
+      tool-screen
+    >
       <template #title>{{ dialog.title }}</template>
       <div class="body">我是对话框</div>
     </t-dialog>

@@ -28,7 +28,7 @@
       <div class="el-dialog__title" v-if="$slots.title">
         <slot name="title"></slot>
       </div>
-      <div class="t-dialog__tool">
+      <div class="t-dialog__tool" v-if="toolScreen == true">
         <div
           class="t-dialog__minimize el-icon el-icon-bottom-left"
           @click="handleMinimizeClick"
@@ -54,6 +54,7 @@ export default {
     visible: Boolean,
     title: String,
     width: String,
+    toolScreen: Boolean,
     fullscreen: Boolean,
     minscreen: Boolean,
     top: String,
@@ -80,7 +81,9 @@ export default {
         x: '',
         y: '',
         top: '',
-        left: ''
+        left: '',
+        pTop: '',
+        pLeft: ''
       },
       appendToBody: true,
       maximize: false,
@@ -102,6 +105,29 @@ export default {
     visible: {
       handler(value) {
         this.display = value
+        if (value) {
+          this.$nextTick(() => {
+            const dialog = this.$refs['dialog'].$el
+            const dialogTag = dialog.querySelector(this.className.dialog)
+            const { offsetWidth: bodyWidth, offsetHeight: bodyHeight } = document.body
+            const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = dialogTag
+
+            if (offsetTop + offsetHeight > bodyHeight)
+              dialogTag.style.top = (this.position.top = (bodyHeight - offsetHeight) / 2) + 'px'
+            if (offsetLeft + offsetWidth > bodyWidth)
+              dialogTag.style.left = (this.position.left = (bodyWidth - offsetWidth) / 2) + 'px'
+
+            // dialogTag.style.top = this.position.top + 'px'
+            console.info(
+              'data-window:',
+              bodyWidth,
+              offsetWidth,
+              bodyWidth - offsetWidth,
+              Math.floor((bodyWidth - offsetWidth) / 2),
+              this.position.left
+            )
+          })
+        }
       },
       immediate: true
     },
@@ -137,6 +163,7 @@ export default {
       dialog.addEventListener('DOMNodeRemoved', () => {
         if (this.minimize) document.querySelector('.t-dialog-button__minimize').remove()
       })
+
       window.addEventListener('resize', () => {
         const dialogTag = dialog.querySelector(this.className.dialog)
         const { offsetWidth: bodyWidth, offsetHeight: bodyHeight } = document.body
@@ -159,6 +186,7 @@ export default {
       })
     },
     handleMinimizeClick() {
+      if (!this.toolScreen) return
       if (this.$listeners['before-minimize']) this.$emit('before-minimize')
       this.minimize = true
       document.querySelector('.v-modal').style.display = 'none'
@@ -166,6 +194,7 @@ export default {
       if (this.$listeners['minimized']) this.$emit('minimized')
     },
     handleMaximizeClick() {
+      if (!this.toolScreen) return
       this.maximize = !this.maximize
       const dialogTag = this.$refs['dialog'].$el.querySelector(this.className.dialog)
       const position = dialogTag.attributes['data-position']
@@ -182,11 +211,9 @@ export default {
       }
     },
     handleDialogClose() {
-      console.info('close:')
       if (this.$listeners['close']) this.$emit('close')
     },
     handleDialogClosed() {
-      console.info('closed:')
       if (this.$listeners['closed']) this.$emit('closed')
       this.dialogHeaderEvent('remove')
       this.dragMoveRemoveStyle('clear')
@@ -204,6 +231,8 @@ export default {
       if (!dialogTag.style.position) dialogTag.style.position = 'relative'
       this.position.x = pageX
       this.position.y = pageY
+      this.position.pTop = pageY - dialogTag.offsetTop
+      this.position.pLeft = pageX - dialogTag.offsetLeft
       this.position.flag = true
       if (!this.maximize) this.dragMoveAddStyle()
     },
@@ -221,7 +250,7 @@ export default {
       this.dragMoveRemoveStyle()
     },
     handleHeaderMousemove(e) {
-      const { flag, x, y } = this.position
+      const { flag, x, y, pTop, pLeft } = this.position
       if (this.maximize || !flag) return
       const { pageX, pageY } = e
       const { dialog } = this.className
@@ -242,15 +271,21 @@ export default {
         this.position.left = parseInt(dialogTag.style.left)
       }
 
-      if (offsetTop < 1) dialogTag.style.top = 1 + 'px'
-      else if (bodyHeight - position_b <= 0 && this.position.y - pageY < 0)
-        dialogTag.style.top = bodyHeight - offsetHeight + 'px'
-      else dialogTag.style.top = topNumber + pageY - y + 'px'
+      if (offsetTop < 1) {
+        if (pageY > y) dialogTag.style.top = pageY - y + 'px'
+        else dialogTag.style.top = 0 + 'px'
+      } else if (bodyHeight - position_b - 2 < 1 && y - pageY < 1) {
+        if (pageY - pTop - offsetTop > 1) dialogTag.style.top = bodyHeight - offsetHeight - 2 + 'px'
+        else dialogTag.style.top = topNumber + pageY - y + 'px'
+      } else dialogTag.style.top = topNumber + pageY - y + 'px'
 
-      if (offsetLeft < 1) dialogTag.style.left = 1 + 'px'
-      else if (bodyWidth - position_r <= 0 && this.position.x - pageX < 0)
-        dialogTag.style.left = bodyWidth - offsetWidth - 1 + 'px'
-      else dialogTag.style.left = leftNumber + pageX - x + 'px'
+      if (offsetLeft < 1) {
+        if (pageX > x) dialogTag.style.left = pageX - x + 'px'
+        else dialogTag.style.left = 0 + 'px'
+      } else if (bodyWidth - position_r < 1 && x - pageX < 0) {
+        if (pageX - pLeft - offsetLeft > 1) dialogTag.style.left = bodyWidth - offsetWidth + 'px'
+        else dialogTag.style.left = leftNumber + pageX - x + 'px'
+      } else dialogTag.style.left = leftNumber + pageX - x + 'px'
     },
     dialogHeaderEvent(type = 'add') {
       const { header } = this.className
