@@ -25,8 +25,8 @@
     ref="dialog"
   >
     <template v-slot:title :is="$slots.title">
-      <div class="el-dialog__title" v-if="$slots.title">
-        <slot name="title"></slot>
+      <div class="el-dialog__title">
+        <slot name="title">{{ title }}</slot>
       </div>
       <div class="t-dialog__tool" v-if="toolScreen == true">
         <div
@@ -116,16 +116,6 @@ export default {
               dialogTag.style.top = (this.position.top = (bodyHeight - offsetHeight) / 2) + 'px'
             if (offsetLeft + offsetWidth > bodyWidth)
               dialogTag.style.left = (this.position.left = (bodyWidth - offsetWidth) / 2) + 'px'
-
-            // dialogTag.style.top = this.position.top + 'px'
-            console.info(
-              'data-window:',
-              bodyWidth,
-              offsetWidth,
-              bodyWidth - offsetWidth,
-              Math.floor((bodyWidth - offsetWidth) / 2),
-              this.position.left
-            )
           })
         }
       },
