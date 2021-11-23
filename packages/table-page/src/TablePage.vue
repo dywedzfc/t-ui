@@ -1,26 +1,11 @@
 <!-- 表格+分页插件 -->
 <template>
-  <div class="t-table-panel">
+  <div class="t-table-panel" :style="tablePanelStyle">
     <el-table
       class="t-table"
       :class="{ 't-scrollbar': scrollbar }"
-      :data="filterTableList"
       :height="tableHeight"
-      :max-height="maxHeigh"
-      :stripe="stripe"
-      :border="border"
-      :highlight-current-row="highlightCurrentRow"
-      :row-class-name="rowClassName"
-      :default-expand-all="defaultExpandAll"
-      :tooltip-effect="tooltipEffect"
-      :show-summary="showSummary"
-      :sum-text="sumText"
-      :summary-method="summaryMethod"
-      :span-method="spanMethod"
-      :lazy="lazy"
-      :load="load"
-      :tree-props="treeProps"
-      size="small"
+      v-bind="useProp"
       @select="handleSelect"
       @select-all="handleSelectAll"
       @selection-change="handleSelectionChange"
@@ -31,9 +16,10 @@
       @header-contextmenu="handleHeaderContextmenu"
       @header-dragend="handleHeaderDragend"
       v-loading="loading"
-      :style="{ height: tableHeight }"
       ref="table"
     >
+      <!-- :style="{ height: tableHeight }" -->
+      <!-- :row-key="rowKey" :lazy="lazy" :load="propLoad" :tree-props="treeProps" -->
       <!-- v-scrollbar:table="scrollbar" -->
       <slot></slot>
     </el-table>
@@ -58,118 +44,137 @@ import _ from 'underscore'
 export default {
   name: 'TTablePage',
   props: {
-    loading: {
-      type: Boolean,
-      default: false
-    },
+    loading: { type: Boolean, default: false },
     /**判断是否使用 perfect-scrollbar */
-    scrollbar: {
-      type: Boolean,
-      default: true
-    },
+    scrollbar: { type: Boolean, default: true },
     /**显示的数据 */
-    data: Array,
+    data: { type: Array, default: undefined },
+    height: { type: [String, Number], default: undefined },
     /**Table 的最大高度 */
-    maxHeigh: {
-      type: [String, Number]
-    },
+    maxHeight: { type: [String, Number], default: undefined },
     /**是否为斑马纹 table */
-    stripe: {
-      type: Boolean,
-      default: true
-    },
+    stripe: { ype: Boolean, default: true },
     /**是否带有纵向边框 */
-    border: {
-      type: Boolean,
-      default: true
-    },
+    border: { type: Boolean, default: true },
+    /**Table 的尺寸 */
+    size: { type: String, default: 'small' },
+    /**列的宽度是否自撑开 */
+    fit: { type: Boolean, default: true },
+    /**是否显示表头 */
+    showHeader: { type: Boolean, default: true },
     /**是否要高亮当前行 */
-    highlightCurrentRow: {
-      type: Boolean,
-      default: false
-    },
+    highlightCurrentRow: { type: Boolean, default: false },
     /**
      * 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
      * @param {row, rowIndex}
      */
-    rowClassName: {
-      type: [Function, String]
-    },
+    rowClassName: { type: [Function, String], default: undefined },
+    /**
+     * 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
+     * @param {row, column, rowIndex, columnIndex}
+     */
+    cellClassName: { type: [Function, String], default: undefined },
+    /**
+     * 表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。
+     * @param {row, rowIndex}
+     */
+    headerRowClassName: { type: [Function, String], default: undefined },
+    /**
+     * 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className。
+     * @param {row, column, rowIndex, columnIndex}
+     */
+    headerCellClassName: { type: [Function, String], default: undefined },
+    /**空数据时显示的文本内容，也可以通过 slot="empty" 设置 */
+    emptyText: { type: String, default: undefined },
     /**是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效 */
-    defaultExpandAll: {
-      type: Boolean,
-      default: false
-    },
+    defaultExpandAll: { type: Boolean, default: false },
+    /**默认的排序列的 prop 和顺序。它的prop属性指定默认的排序的列，order指定默认排序的顺序 */
+    defaultSort: { type: Object, default: undefined },
     /**tooltip effect 属性, value: dark/light */
-    tooltipEffect: {
-      type: String
-    },
+    tooltipEffect: { type: String, default: undefined },
     /**是否在表尾显示合计行 */
-    showSummary: {
-      type: Boolean,
-      default: false
-    },
+    showSummary: { type: Boolean, default: false },
     /**合计行第一列的文本 */
-    sumText: {
-      type: String,
-      default: '合计'
-    },
+    sumText: { type: String, default: '合计' },
     /**
      * 自定义的合计计算方法
      * @param { columns, data }
      */
-    summaryMethod: Function,
+    summaryMethod: { type: Function, default: undefined },
     /**
      * 合并行或列的计算方法
      * @param { row, column, rowIndex, columnIndex }
      */
-    spanMethod: Function,
+    spanMethod: { type: Function, default: undefined },
     /**是否懒加载子节点数据 */
-    lazy: Boolean,
+    // lazy: Boolean,
     /**
      * 加载子节点数据的函数，lazy 为 true 时生效，函数第二个参数包含了节点的层级信息
      * @param row
      * @param treeNode
      * @param resolve
      */
-    load: Function,
+    // load: Function,
     /**
      * 渲染嵌套数据的配置选项
      * 默认值：{ hasChildren: 'hasChildren', children: 'children' }
      */
-    treeProps: Object,
+    // treeProps: Object,
     /**是否冻结数据 */
-    hasFreeze: {
-      type: Boolean,
-      default: true
-    },
+    hasFreeze: { type: Boolean, default: true },
     /**每页数量 */
-    pageSize: Number,
-    pageDisabled: {
-      type: Boolean,
-      default: false
-    },
-    realTimePage: {
-      type: Number,
-      default: 1
-    },
+    pageSize: { type: Number, default: undefined },
+    /**禁用 */
+    pageDisabled: { type: Boolean, default: false },
+    /**当前页 */
+    realTimePage: { type: Number, default: 1 },
     /**
      * 总页数
      * 如果是前端分页无需传入，插件会自动生成
      * 后端分页必填
      */
-    pageTotal: Number,
-    prevText: String,
-    nextText: String,
-    firstPage: Boolean
+    pageTotal: { type: Number, default: undefined },
+    /**上一页文字 */
+    prevText: { type: String, default: undefined },
+    /**下一页文字 */
+    nextText: { type: String, default: undefined },
+    /**刷新后是否回到第一页，前端分页时生效 */
+    firstPage: { type: Boolean, default: undefined }
   },
   data() {
-    return {
-      currentPage: 1,
-      pageStandard: 500
-    }
+    return { currentPage: 1, pageStandard: 500 }
   },
   computed: {
+    useProp() {
+      const prop = {}
+      if (this.data) prop.data = this.filterTableList
+      if (this.maxHeight) prop.maxHeight = this.maxHeight
+      if (this.stripe) prop.stripe = this.stripe
+      if (this.border) prop.border = this.border
+      if (this.size) prop.size = this.size
+      if (this.fit) prop.fit = this.fit
+      if (this.showHeader) prop.showHeader = this.showHeader
+      if (this.highlightCurrentRow) prop.highlightCurrentRow = this.highlightCurrentRow
+      if (this.rowClassName) prop.rowClassName = this.rowClassName
+      if (this.cellClassName) prop.cellClassName = this.cellClassName
+      if (this.headerRowClassName) prop.headerRowClassName = this.headerRowClassName
+      if (this.headerCellClassName) prop.headerCellClassName = this.headerCellClassName
+      if (this.emptyText) prop.emptyText = this.emptyText
+      if (this.defaultExpandAll) prop.defaultExpandAll = this.defaultExpandAll
+      if (this.defaultSort) prop.defaultSort = this.defaultSort
+      if (this.tooltipEffect) prop.tooltipEffect = this.tooltipEffect
+      if (this.showSummary) prop.showSummary = this.showSummary
+      if (this.sumText) prop.sumText = this.sumText
+      if (this.summaryMethod) prop.summaryMethod = this.propSummaryMethod
+      if (this.spanMethod) prop.spanMethod = this.propSpanMethod
+      return prop
+    },
+    tablePanelStyle() {
+      const style = {}
+      const height = this.regStyleValue(this.height)
+      if (height) style.height = height
+      return style
+    },
     /**计算表格高度 */
     tableHeight() {
       if (this.getPageTotal / this.getPageSize > 1) return 'calc(100% - 42px)'
@@ -313,6 +318,25 @@ export default {
           currentPage: index,
           pageSize: this.getPageSize
         })
+    },
+
+    propSummaryMethod(item) {
+      return this.summaryMethod ? this.summaryMethod(item) : undefined
+    },
+    propSpanMethod(item) {
+      return this.spanMethod ? this.spanMethod(item) : undefined
+    },
+    // propLoad(row, treeNode, resolve) {
+    //   return this.load ? this.load(row, treeNode, resolve) : undefined
+    // }
+
+    // 格式化CSS Number类型的值
+    regStyleValue(value) {
+      const regString = /^[0-9]+px|em|rem|%|vw|vh|vmin|vmax$/
+      const regNumber = /^[0-9]+$/
+      if (regNumber.test(value)) return `${value}px`
+      if (regString.test(value)) return value
+      return ''
     }
   }
 }

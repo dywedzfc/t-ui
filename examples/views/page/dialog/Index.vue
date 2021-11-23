@@ -7,6 +7,7 @@
       :visible.sync="dialog.display"
       :title="dialog.title"
       :minscreen.sync="dialog.min"
+      radius="20px"
       tool-screen
     >
       <template #title>{{ dialog.title }}</template>

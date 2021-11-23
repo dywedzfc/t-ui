@@ -12,10 +12,21 @@
           :data="table.data"
           :page-size="table.pageSize"
           :first-page="table.firstPage"
+          height="500px"
         >
           <t-table-checkbox fixed />
           <t-table-index />
-          <t-table-column prop="name" width="160" fixed>
+          <t-table-column
+            prop="name"
+            width="160"
+            :filters="[
+              { text: '张三0', value: '张三0' },
+              { text: '张三1', value: '张三1' },
+              { text: '张三2', value: '张三2' }
+            ]"
+            :filter-method="filterHandler"
+            fixed
+          >
             <template #header>
               <el-input value="姓名"></el-input>
             </template>
@@ -29,7 +40,9 @@
           <t-table-column prop="company" label="所属单位" min-width="280" />
           <t-table-operate>
             <template #default="{ row }">
-              <t-table-button color="#67C23A" @click="handleDetailsClick(row)">详情</t-table-button>
+              <t-table-button color="#67C23A" hover-color="#85ce61" @click="handleDetailsClick(row)"
+                >详情</t-table-button
+              >
               <t-table-button icon="el-icon-edit" />
               <t-table-button icon="el-icon-delete" color="#f56c6c" />
             </template>
@@ -43,6 +56,7 @@
           :real-time-page.sync="table.page"
           :page-size="table.pageSize"
           :page-total="table.total"
+          height="500px"
           @current-change="handleTableCurrentChange"
         >
           <t-table-index />
@@ -98,8 +112,8 @@ export default {
         })
     },
 
-    handleDetailsClick(item) {
-      console.info(item.name)
+    handleDetailsClick() {
+      // console.info(item.name)
     },
     handleUpdateClick() {
       this.type = 1
@@ -157,9 +171,12 @@ export default {
     },
 
     formatterDuties(__, ___, value) {
-      console.info('formatter:', __, ___)
       if (value == 6) return '六号测试'
       return '测试'
+    },
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === value
     }
   }
 }

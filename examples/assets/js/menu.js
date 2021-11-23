@@ -2,7 +2,6 @@ import _ from 'underscore'
 import { system, menu } from './menu.config.json'
 
 export function getMenuList(id) {
-  console.info('router-name:', id)
   return _.filter(menu, item => item.pid == id)
 }
 

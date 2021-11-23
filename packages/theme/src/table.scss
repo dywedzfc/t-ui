@@ -58,6 +58,9 @@
       }
     }
   }
+  th > .cell {
+    white-space: nowrap;
+  }
 
   &__radius {
     &.el-table {

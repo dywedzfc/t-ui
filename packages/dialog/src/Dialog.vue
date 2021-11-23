@@ -1,7 +1,7 @@
 <!-- 对话框 -->
 <template>
   <el-dialog
-    :class="['t-dialog t-move', { minimize, maximize }]"
+    :class="['t-dialog', { 't-move': move, minimize, maximize }]"
     :visible.sync="display"
     :title="title"
     :width="width"
@@ -54,23 +54,26 @@ export default {
     visible: Boolean,
     title: String,
     width: String,
-    toolScreen: Boolean,
-    fullscreen: Boolean,
-    minscreen: Boolean,
+    toolScreen: Boolean, // 是否显示最大化和最小化
+    fullscreen: Boolean, // 最大化
+    minscreen: Boolean, // 最小化
     top: String,
-    modal: { type: Boolean, default: true },
-    modalAppendToBody: { type: Boolean, default: true },
-    lockScroll: { type: Boolean, default: true },
-    customClass: String,
-    closeOnClickModal: { type: Boolean, default: false },
-    closeOnPressEscape: { type: Boolean, default: true },
-    showClose: { type: Boolean, default: true },
-    beforeClose: Function,
-    center: Boolean,
-    destroyOnClose: Boolean
+    radius: { type: String, default: '4px' }, // 圆角
+    move: { type: Boolean, default: true }, // 是否可以拖拽
+    modal: { type: Boolean, default: true }, // 是否需要遮罩层
+    modalAppendToBody: { type: Boolean, default: true }, // 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Dialog 的父元素上
+    lockScroll: { type: Boolean, default: true }, // 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Dialog 的父元素上
+    customClass: String, // 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Dialog 的父元素上
+    closeOnClickModal: { type: Boolean, default: false }, // 是否可以通过点击 modal 关闭 Dialog
+    closeOnPressEscape: { type: Boolean, default: true }, // 是否可以通过按下 ESC 关闭 Dialog
+    showClose: { type: Boolean, default: true }, // 是否可以通过按下 ESC 关闭 Dialog
+    beforeClose: Function, // 关闭前的回调，会暂停 Dialog 的关闭
+    center: Boolean, // 是否对头部和底部采用居中布局
+    destroyOnClose: Boolean // 关闭时销毁 Dialog 中的元素
   },
   data() {
     return {
+      one: true,
       display: false,
       className: {
         dialog: '.el-dialog',
@@ -112,10 +115,12 @@ export default {
             const { offsetWidth: bodyWidth, offsetHeight: bodyHeight } = document.body
             const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = dialogTag
 
-            if (offsetTop + offsetHeight > bodyHeight)
+            // 判断是否是第一次进入
+            if (offsetTop + offsetHeight > bodyHeight || (this.one && offsetTop == 0))
               dialogTag.style.top = (this.position.top = (bodyHeight - offsetHeight) / 2) + 'px'
-            if (offsetLeft + offsetWidth > bodyWidth)
+            if (offsetLeft + offsetWidth > bodyWidth || (this.one && offsetLeft == 0))
               dialogTag.style.left = (this.position.left = (bodyWidth - offsetWidth) / 2) + 'px'
+            if (this.one) this.one = false
           })
         }
       },
@@ -144,6 +149,19 @@ export default {
     },
     minimize(value) {
       if (this.$listeners['update:minscreen']) this.$emit('update:minscreen', value)
+    },
+    radius: {
+      handler(value) {
+        this.$nextTick(() => {
+          const pureNumbersReg = /^\d+$/
+          const cssNumberReg = /^\d+((px)|(pt)|(pc)|(in)|(mm)|(cm)|(em)|(rem)|(ex)|(ch)|(vw)|(vh)|(vmin)|(vmax)|%)$/
+          const dialog = this.$refs['dialog'].$el.querySelector(this.className.dialog)
+          if (pureNumbersReg.test(value)) dialog.style.borderRadius = `${value}px`
+          else if (cssNumberReg.test(value)) dialog.style.borderRadius = value
+          else dialog.style.borderRadius = '4px'
+        })
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -172,7 +190,7 @@ export default {
     handleDialogOpened() {
       if (this.$listeners['opened']) this.$emit('opened')
       this.$nextTick(() => {
-        this.dialogHeaderEvent()
+        if (this.move) this.dialogHeaderEvent()
       })
     },
     handleMinimizeClick() {
@@ -185,6 +203,7 @@ export default {
     },
     handleMaximizeClick() {
       if (!this.toolScreen) return
+      if (this.$listeners['before-maximize']) this.$emit('before-maximize')
       this.maximize = !this.maximize
       const dialogTag = this.$refs['dialog'].$el.querySelector(this.className.dialog)
       const position = dialogTag.attributes['data-position']
@@ -199,6 +218,7 @@ export default {
         if (left) dialogTag.style.left = left
         dialogTag.attributes['data-position'] = undefined
       }
+      if (this.$listeners['maximized']) this.$emit('maximized')
     },
     handleDialogClose() {
       if (this.$listeners['close']) this.$emit('close')

@@ -257,8 +257,8 @@ export default {
         })
     },
 
-    handleDetailsClick(item) {
-      console.info(item.name)
+    handleDetailsClick() {
+      // console.info(item.name)
     },
     capitalize(value) {
       return value.substring(0, 1).toUpperCase() + value.substring(1)

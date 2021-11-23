@@ -22,8 +22,7 @@ export function styleValueToInt(value) {
  */
 export function iconClassName(icon) {
   if (icon) {
-    if (icon.indexOf('el-icon-') === 0) return icon
-    else if (icon.indexOf('icon-') === 0) return `iconfont ${icon}`
+    if (icon.indexOf('icon-') === 0) return `iconfont ${icon}`
     else return icon
   }
   return ''

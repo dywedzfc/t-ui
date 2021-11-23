@@ -8,7 +8,7 @@
   height: 100%;
 
   &.border {
-    @include border-shadow(10px, rgba(0, 0, 0, 0.5));
+    @include border-shadow(10px, rgba(0, 0, 0, 0.3));
   }
 
   .t-image {
@@ -97,11 +97,15 @@
         background-color: #e81123;
       }
 
+      &.t-button {
+        font-size: 30px;
+      }
       &.not-display {
-        border-top: 1px solid #aaaaaa;
-        border-left: 1px solid #aaaaaa;
+        border-top: 1px solid #eeeeee;
+        border-left: 1px solid #eeeeee;
         border-radius: 10px 0 0 0;
         background-color: #ffffff;
+        font-size: 20px;
 
         &:hover {
           color: #ffffff;
@@ -114,7 +118,7 @@
       max-width: 550px;
       max-height: 400px;
       border-top-left-radius: 10px;
-      box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
     }
   }
 }

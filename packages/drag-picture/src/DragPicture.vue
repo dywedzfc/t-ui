@@ -20,12 +20,11 @@
       当前浏览器不支持canvas，请更换浏览器后再试！
     </canvas>
     <div class="t-toolbar">
-      <el-tooltip content="刷新图片" placement="top">
-        <div
-          class="t-toolbar-item el-icon-refresh-right"
-          @click="handleImageRefreshChick"
-        ></div>
-      </el-tooltip>
+      <template v-if="this.image.data">
+        <el-tooltip content="刷新图片" placement="top">
+          <div class="t-toolbar-item el-icon-refresh-right" @click="handleImageRefreshChick"></div>
+        </el-tooltip>
+      </template>
     </div>
     <div class="t-notice-box" :class="noticePositionClassName" v-if="noticeSrc">
       <div
@@ -36,17 +35,13 @@
         <template v-if="notice.display">&times;</template>
         <template v-else>↖</template>
       </div>
-      <img
-        v-if="notice.display"
-        :src="noticeSrc"
-        alt=""
-        class="t-notice-image"
-      />
+      <img v-if="notice.display" :src="noticeSrc" alt="" class="t-notice-image" />
     </div>
   </div>
 </template>
 
 <script>
+// import { Message } from 'element-ui'
 import { Image } from 'image-js'
 
 export default {
@@ -123,13 +118,14 @@ export default {
   },
   methods: {
     handleImageMousedown(e) {
+      if (!this.image.data) return
       const { screenX, screenY } = e
       this.hasMove = true
       this.locate.x = screenX
       this.locate.y = screenY
     },
     handleImageMouseup(e) {
-      if (!this.hasMove) return
+      if (!this.image.data || !this.hasMove) return
       const { screenX, screenY } = e
       const { x, y } = this.locate
       this.hasMove = false
@@ -139,7 +135,7 @@ export default {
       this.locate.y = ''
     },
     handleImageMousemove(e) {
-      if (!this.hasMove) return
+      if (!this.image.data || !this.hasMove) return
       const panel = this.$refs.dragPanel
       const { x, y } = this.locate
       const { screenX, screenY } = e
@@ -161,7 +157,7 @@ export default {
       this.canvasText.drawImage(image, point.x, point.y, canvasW, canvasH)
     },
     handleImageMouseout(e) {
-      if (!this.hasMove) return
+      if (!this.image.data || !this.hasMove) return
       const { screenX, screenY } = e
       const { x, y } = this.locate
       this.hasMove = false
@@ -190,6 +186,7 @@ export default {
       this.canvasText.drawImage(image, point.x, point.y, canvasW, canvasH)
     },
     handleImageRefreshChick() {
+      if (!this.image.data) return
       const panel = this.$refs.dragPanel
       const { data: image, width, height } = this.image
 
@@ -214,27 +211,31 @@ export default {
       if (path) {
         this.loading = true
         const image = Image.load(path)
-        image.then(image => {
-          const panelWidth = panel.offsetWidth
-          let width = image.width
-          let height = image.height
-          if ((panelWidth / 2) * 3 < width) {
-            width = (width / 3) * 2
-            height = (height / 3) * 2
-          }
-          const img = (this.image.data = image.getCanvas())
-          this.image.width = width
-          this.image.height = height
-          const drawWidth = panel.offsetWidth / 2 - width / 2
-          const drawHeight = panel.offsetHeight / 2 - height / 2
-          this.canvasText.clearRect(0, 0, panel.offsetWidth, panel.offsetHeight)
-          this.canvasText.drawImage(img, drawWidth, drawHeight, width, height)
-          this.loading = false
-        })
-      } else
-        this.canvasText.clearRect(0, 0, panel.offsetWidth, panel.offsetHeight)
+        image
+          .then(image => {
+            const panelWidth = panel.offsetWidth
+            let width = image.width
+            let height = image.height
+            if ((panelWidth / 2) * 3 < width) {
+              width = (width / 3) * 2
+              height = (height / 3) * 2
+            }
+            const img = (this.image.data = image.getCanvas())
+            this.image.width = width
+            this.image.height = height
+            const drawWidth = panel.offsetWidth / 2 - width / 2
+            const drawHeight = panel.offsetHeight / 2 - height / 2
+            this.canvasText.clearRect(0, 0, panel.offsetWidth, panel.offsetHeight)
+            this.canvasText.drawImage(img, drawWidth, drawHeight, width, height)
+            this.loading = false
+          })
+          .catch(e => {
+            console.error(e)
+            this.loading = false
+            this.$message({ message: '找不到图片', type: 'warning' })
+          })
+      } else this.canvasText.clearRect(0, 0, panel.offsetWidth, panel.offsetHeight)
     }
   }
 }
 </script>
-

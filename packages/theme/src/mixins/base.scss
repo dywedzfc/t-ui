@@ -28,7 +28,7 @@
 
 @mixin border-shadow($radius: 5px, $color: #888888) {
   border-radius: $radius;
-  box-shadow: 6px 6px 12px $color;
+  box-shadow: 3px 3px 8px $color;
 }
 
 @mixin radius($type) {

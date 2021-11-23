@@ -16,6 +16,7 @@ import TableCheckbox from './table-checkbox'
 import TableColumn from './table-column'
 import TableOperate from './table-operate'
 import TableButton from './table-button'
+import Panel from './panel'
 import QueryBar from './query-bar'
 import QueryPanel from './query-panel'
 import DragPicture from './drag-picture'
@@ -40,6 +41,7 @@ const components = [
   TableColumn,
   TableOperate,
   TableButton,
+  Panel,
   QueryBar,
   QueryPanel,
   DragPicture,

@@ -1,6 +1,7 @@
 @import "./common/layout";
 
 .t-layout {
+  $color: #eeeeee;
   position: relative;
   height: 100%;
   box-sizing: border-box;
@@ -31,22 +32,76 @@
   &-right {
     position: absolute;
     top: 0;
+    z-index: 1;
     height: 100%;
+
+    .t-layout-wrapper {
+      overflow-x: hidden;
+    }
+    .t-control-strip {
+      position: absolute;
+      top: 0;
+      transform: none;
+      opacity: 0;
+      background-color: #cccccc;
+      transition: left 0.5s ease-in-out, right 0.5s ease-in-out, opacity 0.5s;
+
+      width: 10px;
+      height: 100%;
+
+      &:hover {
+        opacity: 1;
+        z-index: 50;
+      }
+      &::before {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 200%;
+        height: 100%;
+
+        content: "";
+      }
+    }
+  }
+
+  &-header.t-border {
+    border-bottom: 1px solid $color;
   }
 
   &-left {
     left: 0;
+
+    &.t-border {
+      border-right: 1px solid $color;
+    }
+    .t-control-strip {
+      right: -5px;
+    }
+    &.hidden .t-control-strip {
+      right: -10px;
+    }
   }
 
   &-right {
     right: 0;
+
+    &.t-border {
+      border-left: 1px solid $color;
+    }
+    .t-control-strip {
+      left: -5px;
+    }
+    &.hidden .t-control-strip {
+      left: -10px;
+    }
   }
 
   &-footer {
-    // &.t-control {
-    //   padding-top: 5px;
-    // }
-
+    &.t-border {
+      border-top: 1px solid $color;
+    }
     .t-control {
       &-strip {
         position: absolute;
@@ -56,10 +111,10 @@
         height: 10px;
         background-color: #cccccc;
         opacity: 0;
+        z-index: 50;
 
         &:hover {
           opacity: 1;
-          z-index: 50;
         }
 
         &::after {
@@ -74,7 +129,17 @@
     }
   }
 
+  &-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+  }
+
   &-body {
+    width: 100%;
     height: 100%;
     transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin-left 0.5s ease-in-out,
       margin-right 0.5s ease-in-out;
@@ -82,8 +147,7 @@
 
   &.t-border {
     // $color: #d7dae2;
-    $color: #eeeeee;
-    // border: 1px solid $color;
+    border: 1px solid $color;
 
     & > .t-layout {
       &-header {
@@ -125,6 +189,9 @@
       &-right {
         overflow: hidden;
       }
+    }
+    .t-control-strip {
+      cursor: no-drop;
     }
   }
 }
@@ -343,6 +410,7 @@
       }
     }
   }
+
   .t-aside,
   .t-header,
   .t-footer {
@@ -354,6 +422,13 @@
     &-control-strip {
       opacity: 0;
     }
+  }
+  .t-aside,
+  .t-body {
+    transition: width 0.4s linear;
+  }
+  .t-aside.is-move {
+    transition: none;
   }
 
   .t-container ~ .t-aside {
@@ -371,11 +446,15 @@
 
 .t-grid-layout {
   overflow: auto;
-  height: 100%;
   box-sizing: border-box;
+  height: 100%;
+  // font-size: 0;
+
+  > div,
   > .t-panel {
     float: left;
     box-sizing: border-box;
+    // font-size: 14px;
   }
 }
 

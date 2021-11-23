@@ -1,7 +1,7 @@
 <template>
   <aside
     class="t-aside"
-    :class="{ 'is-border': border }"
+    :class="{ 'is-border': border, 'is-move': controlType == 'move' }"
     :style="{ width }"
     ref="aside"
   >
@@ -39,21 +39,35 @@ export default {
       mouse: { down: false, point: null, width: null }
     }
   },
+  computed: {
+    frontAndBack() {
+      const tags = _.map(this.$parent.$children, item => item.$options._componentTag)
+      const uids = _.map(this.$parent.$children, item => item._uid)
+      const currentIndex = _.indexOf(uids, this._uid)
+      const bodyIndex = _.indexOf(tags, 't-body')
+      return bodyIndex >= 0 && bodyIndex < currentIndex ? 'right' : 'left'
+    }
+  },
   mounted() {},
   methods: {
     handleDocumentMousemove() {
       const { down, width, point } = this.mouse
       if (!down) return
       const aside = this.$refs.aside
-      const wrapper = this.$refs.wrapper
+      // const wrapper = this.$refs.wrapper
       const controlStrip = this.$refs.controlStrip
-      if (this.frontAndBack(aside) === 'last') {
-        const wWidth = wrapper.offsetWidth
-        const csWidth = controlStrip.offsetWidth
-        let newWidth = width + (point - event.x)
-        if (newWidth <= wWidth + csWidth) newWidth = wWidth + csWidth - 1
-        aside.style.width = `${newWidth}px`
-      } else aside.style.width = `${width - (point - event.x)}px`
+      const csWidth = controlStrip.offsetWidth
+      let newWidth = 0
+      if (this.frontAndBack === 'right') {
+        newWidth = width + (point - event.x)
+        aside.style.width = newWidth < csWidth ? `${csWidth}px` : `${newWidth}px`
+      } else {
+        newWidth = width - (point - event.x)
+        aside.style.width = newWidth < csWidth ? `${csWidth}px` : `${newWidth}px`
+      }
+      // console.info('move:', newWidth, wrapper.offsetWidth, wrapper.clientWidth)
+      // if (newWidth < wrapper.offsetWidth) wrapper.style.overflo = 'hidden'
+      // else wrapper.style.overflo = 'visible'
     },
     handleDocumentMouseup() {
       if (!this.mouse.down) return
@@ -98,22 +112,20 @@ export default {
       else width = csWidth
       this.$refs.aside.style.width = width
       const controlStrip = this.$refs.controlStrip
-      controlStrip.removeEventListener(
-        'mouseup',
-        this.handleControlStripMouseup
-      )
-    },
-    frontAndBack(aside) {
-      const parentNode = aside.parentNode
-      let hasBody = false
-      let hasAside = false
-      _.each(parentNode.children, item => {
-        if (!hasBody && hasAside) return
-        else if (item === aside) hasAside = true
-        else if (item.className === 't-body') hasBody = true
-      })
-      return hasBody && hasAside ? 'last' : 'first'
+      controlStrip.removeEventListener('mouseup', this.handleControlStripMouseup)
     }
+
+    // frontAndBack(aside) {
+    //   const parentNode = aside.parentNode
+    //   let hasBody = false
+    //   let hasAside = false
+    //   _.each(parentNode.children, item => {
+    //     if (!hasBody && hasAside) return
+    //     else if (item === aside) hasAside = true
+    //     else if (item.className === 't-body') hasBody = true
+    //   })
+    //   return hasBody && hasAside ? 'last' : 'first'
+    // }
   }
 }
 </script>

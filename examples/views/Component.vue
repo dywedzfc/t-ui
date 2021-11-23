@@ -1,5 +1,5 @@
 <template>
-  <t-layout class="index-wrapper" header="80" left="240" border>
+  <t-layout class="index-wrapper" header="80" left="240">
     <template v-slot:header>
       <t-header></t-header>
     </template>
@@ -15,11 +15,7 @@
           >
             {{ capitalize(item.id) }} {{ item.title }}
           </router-link>
-          <div
-            class="index-menu-item nav__title"
-            v-else-if="item.type === 'title'"
-            :key="item.id"
-          >
+          <div class="index-menu-item nav__title" v-else-if="item.type === 'title'" :key="item.id">
             {{ capitalize(item.title) }}
           </div>
           <div class="index-menu-item nav__group" v-else :key="item.id">

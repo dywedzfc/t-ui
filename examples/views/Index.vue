@@ -1,5 +1,5 @@
 <template>
-  <t-layout class="index-wrapper" header="80" left="240" border>
+  <t-layout class="index-wrapper" header="80" left="240" innter-border>
     <template v-slot:header>
       <t-header></t-header>
     </template>
@@ -136,7 +136,6 @@ export default {
     },
 
     formatterDuties(__, ___, value) {
-      console.info('formatter:', __, ___)
       if (value == 6) return '六号测试'
       return '测试'
     }
